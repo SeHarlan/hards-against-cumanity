@@ -1,12 +1,22 @@
 import Link from 'next/link';
-import Layout from '../components/layout/layout';
+import Layout from '../components/Layout/Layout';
+import { getCards } from '../services/JsonAH';
 
-export default function GameTable() {
+export default function GameTable({ cards }) {
   return (
     <Layout>
       <section>
-        <Link href="/"><a>Home</a></Link>
+        <h2>{cards.whiteCards[0]}</h2>
       </section>
     </Layout>
   )
+}
+
+export async function getStaticProps() {
+  const cards = getCards()
+  return {
+    props: {
+      cards
+    }
+  }
 }
