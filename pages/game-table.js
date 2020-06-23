@@ -6,7 +6,7 @@ export default function GameTable({ cards }) {
   return (
     <Layout>
       <section>
-        <h2>{cards.whiteCards[0]}</h2>
+        <h2>{cards.blackCards[110]}</h2>
       </section>
     </Layout>
   )
