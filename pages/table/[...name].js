@@ -1,4 +1,4 @@
-import { getPathNames, getCards } from '../../services/JsonAH'
+import { getPathNames, getCards } from '../../lib/services'
 import GameTable from '../game-table'
 
 import { tableName } from '../index'

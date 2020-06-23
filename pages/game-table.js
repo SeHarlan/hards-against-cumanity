@@ -1,12 +1,22 @@
-import Link from 'next/link';
 import Layout from '../components/Layout';
-import { getCards } from '../services/JsonAH';
+import { getCards } from '../lib/services'
+import { useState, useEffect } from 'react';
+import Deck from '../lib/Deck';
+import withList from '../lib/withList';
+import { BlackCard, WhiteCard } from '../components/Cards';
+
 
 export default function GameTable({ cards }) {
+
+  const deck = new Deck(cards)
+
+  const WhiteCardHand = withList(WhiteCard)
+
   return (
     <Layout>
       <section>
-        <h2>{cards.blackCards[110]}</h2>
+        <BlackCard text={deck.drawBlackCard()} />
+        <WhiteCardHand list={deck.drawWhiteCards(7)} />
       </section>
     </Layout>
   )
