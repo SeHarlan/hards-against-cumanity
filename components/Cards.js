@@ -1,8 +1,10 @@
+import React from 'react'
+
 export function WhiteCard({ text }) {
-  return <span dangerouslySetInnerHTML={{ __html: text }}></span>
+  return <div dangerouslySetInnerHTML={{ __html: text }}></div>
 }
 
 export function BlackCard({ text }) {
   const newText = text.replace(/_/g, '______')
-  return <h3 dangerouslySetInnerHTML={{ __html: newText }}></h3>
+  return <div dangerouslySetInnerHTML={{ __html: newText }}></div>
 }
