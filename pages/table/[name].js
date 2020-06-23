@@ -1,4 +1,5 @@
 import { getPathNames, getCards } from '../../lib/services'
+import { useRouter } from 'next/router'
 import GameTable from '../game-table'
 
 import { tableName } from '../index'
@@ -14,9 +15,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const pickOneBool = (params.name[1] === 'pick-two') ? false : true
 
-  const cards = getCards(pickOneBool)
+  const cards = getCards(false)
   return {
     props: {
       cards

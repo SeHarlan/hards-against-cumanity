@@ -1,8 +1,8 @@
 export function WhiteCard({ text }) {
-  return <p dangerouslySetInnerHTML={{ __html: text }}></p>
+  return <span dangerouslySetInnerHTML={{ __html: text }}></span>
 }
 
 export function BlackCard({ text }) {
   const newText = text.replace(/_/g, '______')
-  return <h2 dangerouslySetInnerHTML={{ __html: newText }}></h2>
+  return <h3 dangerouslySetInnerHTML={{ __html: newText }}></h3>
 }
