@@ -1,20 +1,29 @@
 import Layout from '../components/Layout';
 import { getCards } from '../lib/services'
-import { useState, useEffect } from 'react';
-import Deck from '../lib/Deck';
-import withList from '../lib/withList';
 import { BlackCard } from '../components/Cards';
 import WhiteCardHand from '../components/WhiteCardHand';
+import useDeck from '../lib/useDeck';
+import Deck from '../lib/Deck'
+
+
 
 export default function GameTable({ cards }) {
 
-  const deck = new Deck(cards)
+  const {
+    drawBlackCard,
+    drawWhiteCards
+  } = useDeck(cards)
+
+  // used with Deck class
+  // const deck = new Deck(cards)
+
+
 
   return (
     <Layout>
       <section>
-        <BlackCard text={deck.drawBlackCard()} />
-        <WhiteCardHand hand={deck.drawWhiteCards(7)} />
+        <BlackCard text={drawBlackCard()} />
+        <WhiteCardHand hand={drawWhiteCards(7)} />
       </section>
     </Layout>
   )
