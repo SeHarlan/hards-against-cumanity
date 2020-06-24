@@ -3,9 +3,8 @@ import { getCards } from '../lib/services'
 import { BlackCard } from '../components/Cards';
 import WhiteCardHand from '../components/WhiteCardHand';
 import useDeck from '../lib/useDeck';
-import Deck from '../lib/Deck'
-
-
+import { useState } from 'react';
+import ChosenCards from '../components/ChosenCards';
 
 export default function GameTable({ cards }) {
 
@@ -14,15 +13,13 @@ export default function GameTable({ cards }) {
     drawWhiteCards
   } = useDeck(cards)
 
-  // used with Deck class
-  // const deck = new Deck(cards)
-
-
+  const chosenCards = ['1', '2', '3']
 
   return (
     <Layout>
       <section>
         <BlackCard text={drawBlackCard()} />
+        <ChosenCards chosenCards={chosenCards} />
         <WhiteCardHand hand={drawWhiteCards(7)} />
       </section>
     </Layout>

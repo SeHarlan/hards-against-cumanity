@@ -2,7 +2,7 @@ import { WhiteCard } from './Cards'
 import { useState } from 'react'
 
 
-export default function WhiteCardHand({ hand }) {
+export default function ChosenCards({ chosenCards }) {
   const [chosenCard, setChosenCard] = useState('')
 
   const handleChange = ({ target }) => setChosenCard(target.value)
@@ -10,13 +10,13 @@ export default function WhiteCardHand({ hand }) {
   const handleClick = (e) => {
     e.preventDefault()
 
-    //logic for choosing your card
+    //logic for choosing the winning card
     alert(chosenCard)
   }
 
-  const options = hand.map(card => (
+  const options = chosenCards.map(card => (
     <div key={card}>
-      <input type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
+      <input type="radio" name="chosenCard" id={card} value={card} onChange={handleChange} />
       <label htmlFor={card}>
         <WhiteCard text={card} />
       </label>
@@ -25,10 +25,13 @@ export default function WhiteCardHand({ hand }) {
   ))
 
   return (
-    <form>
-      {options}
-      <button onClick={handleClick}>Final Answer</button>
-    </form>
+    <>
+      <h3>You are the Card Czar</h3>
+      <form>
+        {options}
+        <button onClick={handleClick}>This Is The One</button>
+      </form>
+    </>
   )
 
 }
