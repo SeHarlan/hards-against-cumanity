@@ -9,9 +9,22 @@ const nextHandler = nextApp.getRequestHandler()
 
 let port = 3000
 
-io.on('connect', socket => {
-  socket.emit('CONNECTED', {
-    message: 'connected to socket.io'
+io.on('connection', socket => {
+  socket.on('FIRST_EVENT', () => {
+    console.log('revieced on backend')
+    io.emit('TEST_RECIEVED', {
+      message: 'test has been recieved'
+    })
+  })
+
+  socket.on('TEXT', (text) => {
+    console.log('text from FE', text)
+    socket.broadcast.emit('TEXT', text)
+  })
+
+  socket.on('CHOSEN_WHITE_CARD', (card) => {
+    console.log(card)
+    io.emit('CHOSEN_WHITE_CARD', card)
   })
 })
 

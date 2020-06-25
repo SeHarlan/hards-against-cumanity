@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "node": "node server.js",
+    "node:watch": "nodemon server.js",
     "build": "next build",
     "start": "next start"
   },
@@ -15,5 +16,8 @@
     "react-dom": "16.13.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

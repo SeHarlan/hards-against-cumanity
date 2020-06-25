@@ -5,15 +5,19 @@ import WhiteCardHand from '../components/WhiteCardHand';
 import useDeck from '../lib/useDeck';
 import { useState } from 'react';
 import ChosenCards from '../components/ChosenCards';
+import useSocket from '../lib/useSocket';
 
 export default function GameTable({ cards }) {
 
+  const [chosenCards, setChosenCards] = useState([])
   const {
     drawBlackCard,
     drawWhiteCards
   } = useDeck(cards)
 
-  const chosenCards = ['1', '2', '3']
+  useSocket('CHOSEN_WHITE_CARD', (card) => {
+    setChosenCards([...chosenCards, card])
+  })
 
   return (
     <Layout>
