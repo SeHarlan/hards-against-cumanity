@@ -6,8 +6,8 @@
     "dev": "next dev",
     "node": "node server.js",
     "node:watch": "nodemon server.js",
-    "build": "next build",
-    "start": "next start & node server.js"
+    "build": "next build & node server.js",
+    "start": "next start"
   },
   "dependencies": {
     "express": "^4.17.1",
