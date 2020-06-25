@@ -10,7 +10,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
 
-let port = 3001
+let port = 3000
 
 const cards = getCards()
 const deck = new Deck(cards)
