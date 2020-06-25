@@ -11,7 +11,7 @@ export default function WhiteCardHand({ hand }) {
 
   const handleClick = (e) => {
     e.preventDefault()
-    socket.emit('CHOSEN_WHITE_CARD', chosenCard)
+    socket.emit('CHOSE_WHITE_CARD', chosenCard)
   }
 
   const options = hand.map(card => (
