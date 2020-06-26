@@ -3,14 +3,15 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 
-const Deck = require('./lib/Deck')
-const { getCards } = require('./lib/nodeServices')
+const Deck = require('../lib/Deck')
+const { getCards } = require('../lib/nodeServices')
+
+let port = process.env.PORT || 3000
 
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
 
-let port = 3000
 
 const cards = getCards()
 const deck = new Deck(cards)

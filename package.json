@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
-    "node:watch": "nodemon server.js",
+    "dev": "nodemon server/index.js",
     "build": "next build",
     "start": "next start",
     "export": "next export"
