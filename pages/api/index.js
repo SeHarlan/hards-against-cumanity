@@ -3,8 +3,8 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 
-const Deck = require('../lib/Deck')
-const { getCards } = require('../lib/nodeServices')
+const Deck = require('../../lib/Deck')
+const { getCards } = require('../../lib/nodeServices')
 
 let port = process.env.PORT || 3000
 
