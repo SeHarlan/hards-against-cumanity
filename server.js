@@ -51,7 +51,7 @@ io.on('connection', socket => {
 nextApp.prepare().then(() => {
 
   app.get('*', (req, res) => {
-    return nextHandler(req, res)
+    nextHandler(req, res)
   })
 
   server.listen(port, (err) => {
