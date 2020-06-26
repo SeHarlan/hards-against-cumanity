@@ -15,22 +15,27 @@ const nextHandler = nextApp.getRequestHandler()
 
 const cards = getCards()
 const deck = new Deck(cards)
+const players = []
 
 io.on('connection', socket => {
+  io.emit('PLAYERS', players)
 
-  //TESTING
-  // socket.on('FIRST_EVENT', () => {
-  //   console.log('revieced on backend')
-  //   io.emit('TEST_RECIEVED', {
-  //     message: 'test has been recieved'
-  //   })
-  // })
+  socket.on('JOIN_GAME', (name) => {
+    if (players.some(player => player.id === socket.id)) return
 
-  // socket.on('TEXT', (text) => {
-  //   console.log('text from FE', text)
-  //   socket.broadcast.emit('TEXT', text)
-  // })
-  //TESTING
+    const playerNumber = players.length + 1
+    players.push({
+      id: socket.id,
+      player: playerNumber,
+      name: name || `Player ${playerNumber}`,
+      score: 0
+    })
+
+    socket.emit('DRAW_FULL_HAND', deck.drawWhiteCards(7))
+    io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
+    io.emit('PLAYERS', players)
+    console.log(players)
+  })
 
   socket.on('DRAW_BLACK_CARD', () => {
     io.emit('DRAW_BLACK_CARD', deck.drawBlackCard())
@@ -46,6 +51,7 @@ io.on('connection', socket => {
     console.log(card)
     io.emit('CHOSEN_WHITE_CARDS', card)
   })
+
 })
 
 nextApp.prepare().then(() => {
