@@ -3,10 +3,10 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 
-const Deck = require('../lib/Deck')
-const { getCards } = require('../lib/nodeServices')
+const Deck = require('./lib/Deck')
+const { getCards } = require('./lib/nodeServices')
 
-let port = process.env.PORT || 3000
+const port = parseInt(process.env.PORT, 10) || 3000
 
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
