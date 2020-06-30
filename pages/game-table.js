@@ -21,14 +21,20 @@ export default function GameTable() {
 
   const socket = useSocket()
 
+  const currentPlayer = players.find(player => player.id === socket.id)
+
   useSocket('CHOSEN_WHITE_CARDS', (card) => setChosenCards([...chosenCards, card]))
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
   useSocket('DRAW_FULL_HAND', (hand) => setWhiteHand(hand))
+  useSocket('DRAW_ONE_CARD', (card) => {
+    setWhiteHand(prev => [...prev, card[0]])
+  })
 
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
   useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
   useSocket('PLAYERS', (players) => setPlayers(players))
+  useSocket('NEW_ROUND', () => setChosenCards([]))
 
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
@@ -45,15 +51,17 @@ export default function GameTable() {
         <Players list={players} />
         <p>black deck count: {blackDeckCount}</p>
         <p>white deck count: {whiteDeckCount}</p>
-        <form onSubmit={handleJoinGame}>
-          <input type="text" value={nameText} onChange={handleNameText} />
-          <button>Join Game</button>
-        </form>
+        {!currentPlayer &&
+          <form onSubmit={handleJoinGame}>
+            <input type="text" value={nameText} onChange={handleNameText} />
+            <button>Join Game</button>
+          </form>
+        }
         <button onClick={handleDrawBlackCard}>Draw Black Card</button>
         <button onClick={handleDrawFullHand}>Draw Full Hand</button>
         <BlackCard text={blackCard} />
         <ChosenCards chosenCards={chosenCards} />
-        <WhiteCardHand hand={whiteHand} />
+        <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
       </section>
     </Layout>
   )
