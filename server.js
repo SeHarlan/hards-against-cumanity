@@ -17,17 +17,35 @@ const nextHandler = nextApp.getRequestHandler()
 const cards = getCards()
 let deck = new Deck(cards)
 const players = new Players()
+const disconectedUsernames = []
 
 io.on('connection', socket => {
+  socket.on('disconnect', () => {
+    disconectedUsernames.push(socket.username)
+    console.log(disconectedUsernames)
+  })
+
   io.emit('PLAYERS', players.players)
 
   socket.on('JOIN_GAME', (name) => {
-    const added = players.addPlayer(socket.id, name)
-    if (added) {
-      socket.emit('DRAW_FULL_HAND', deck.drawWhiteCards(7))
-      io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
-      io.emit('PLAYERS', players.players)
+    let added = false
+
+    if (disconectedUsernames.includes(name)) {
+      added = players.reconnectPlayer(socket.id, name)
+    } else {
+      added = players.addPlayer(socket.id, name)
     }
+
+    if (!added) {
+      socket.emit('INVALID_SIGN_UP')
+      return
+    }
+    socket.emit('DRAW_FULL_HAND', deck.drawWhiteCards(7))
+    io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
+    io.emit('PLAYERS', players.players)
+    const currentPlayer = players.players.find(player => player.id === socket.id)
+    socket.username = currentPlayer.name
+
   })
 
   socket.on('DRAW_BLACK_CARD', () => {

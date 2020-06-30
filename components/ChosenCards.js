@@ -33,7 +33,7 @@ export default function ChosenCards({ chosenCards }) {
     <>
       {currentPlayer?.czar && <h3>You are the Card Czar</h3>}
       <form >
-        <fieldset disabled={!currentPlayer?.czar}>
+        <fieldset disabled={!currentPlayer?.czar || !chosenCards.length}>
           <legend>Chosen Cards</legend>
           {options}
           <button onClick={handleClick}>This Is The One</button>

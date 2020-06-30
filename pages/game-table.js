@@ -18,6 +18,7 @@ export default function GameTable() {
   const [whiteDeckCount, setWhiteDeckCount] = useState('')
   const [nameText, setNameText] = useState('')
   const [players, setPlayers] = useState([])
+  const [invalid, setInvalid] = useState(false)
 
   const socket = useSocket()
 
@@ -33,8 +34,11 @@ export default function GameTable() {
 
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
   useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
+
   useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => setChosenCards([]))
+
+  useSocket('INVALID_SIGN_UP', () => setInvalid(true))
 
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
@@ -49,19 +53,20 @@ export default function GameTable() {
     <Layout>
       <section>
         <Players list={players} />
-        <p>black deck count: {blackDeckCount}</p>
-        <p>white deck count: {whiteDeckCount}</p>
         {!currentPlayer &&
           <form onSubmit={handleJoinGame}>
             <input type="text" value={nameText} onChange={handleNameText} />
             <button>Join Game</button>
+            {invalid && <p>Username already taken</p>}
           </form>
         }
-        <button onClick={handleDrawBlackCard}>Draw Black Card</button>
-        <button onClick={handleDrawFullHand}>Draw Full Hand</button>
+        <p>black deck count: {blackDeckCount}</p>
+        <button onClick={handleDrawBlackCard}>Draw New Black Card</button>
         <BlackCard text={blackCard} />
         <ChosenCards chosenCards={chosenCards} />
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
+        <button onClick={handleDrawFullHand}>Draw Full Hand</button>
+        <p>white deck count: {whiteDeckCount}</p>
       </section>
     </Layout>
   )
