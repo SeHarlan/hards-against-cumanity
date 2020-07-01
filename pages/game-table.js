@@ -25,7 +25,7 @@ export default function GameTable() {
 
   const currentPlayer = players.find(player => player.id === socket.id)
 
-  useSocket('CHOSEN_WHITE_CARDS', (card) => setChosenCards([...chosenCards, card]))
+  useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards([...chosenCards, ...cards]))
   useSocket('WINNING_CARD', (card) => setWinningCard(card))
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))

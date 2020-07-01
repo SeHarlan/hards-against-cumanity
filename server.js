@@ -18,6 +18,8 @@ const cards = getCards()
 let deck = new Deck(cards)
 const players = new Players()
 const disconectedUsernames = []
+let blackCard = 'Draw a black card'
+const chosenWhiteCards = []
 
 io.on('connection', socket => {
   socket.on('disconnect', () => {
@@ -26,6 +28,10 @@ io.on('connection', socket => {
   })
 
   io.emit('PLAYERS', players.players)
+  io.emit('DRAW_BLACK_CARD', blackCard)
+  io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
+  io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
+  io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
 
   socket.on('JOIN_GAME', (name) => {
     let added = false
@@ -49,7 +55,8 @@ io.on('connection', socket => {
   })
 
   socket.on('DRAW_BLACK_CARD', () => {
-    io.emit('DRAW_BLACK_CARD', deck.drawBlackCard())
+    blackCard = deck.drawBlackCard()
+    io.emit('DRAW_BLACK_CARD', blackCard)
     io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
   })
 
@@ -60,7 +67,8 @@ io.on('connection', socket => {
 
   socket.on('CHOOSE_WHITE_CARD', (card) => {
     cardWithID = { card, id: socket.id }
-    io.emit('CHOSEN_WHITE_CARDS', cardWithID)
+    chosenWhiteCards.push(cardWithID)
+    io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
     socket.emit("DRAW_ONE_CARD", deck.drawWhiteCards(1))
   })
 
@@ -73,7 +81,8 @@ io.on('connection', socket => {
   socket.on('START_NEW_ROUND', () => {
     players.changeCzar()
     io.emit('NEW_ROUND')
-    io.emit('DRAW_BLACK_CARD', deck.drawBlackCard())
+    blackCard = deck.drawBlackCard()
+    io.emit('DRAW_BLACK_CARD', blackCard)
     io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
     io.emit('WINNING_CARD', '')
     io.emit('PLAYERS', players.players)

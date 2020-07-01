@@ -17,8 +17,8 @@ export default function ChosenCards({ chosenCards }) {
 
   const handleClick = (e) => {
     e.preventDefault()
-    socket.emit('CHOOSE_WINNING_CARD', chosenCard)
     setSubmitted(true)
+    socket.emit('CHOOSE_WINNING_CARD', chosenCard)
   }
 
   const handleNewRound = () => socket.emit('START_NEW_ROUND')
