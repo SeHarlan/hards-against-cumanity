@@ -1,5 +1,5 @@
 import Layout from '../components/Layout';
-import { BlackCard } from '../components/Cards';
+import { BlackCard, WhiteCard } from '../components/Cards';
 import WhiteCardHand from '../components/WhiteCardHand';
 import { useState } from 'react';
 import ChosenCards from '../components/ChosenCards';
@@ -19,12 +19,14 @@ export default function GameTable() {
   const [nameText, setNameText] = useState('')
   const [players, setPlayers] = useState([])
   const [invalid, setInvalid] = useState(false)
+  const [winningCard, setWinningCard] = useState('')
 
   const socket = useSocket()
 
   const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('CHOSEN_WHITE_CARDS', (card) => setChosenCards([...chosenCards, card]))
+  useSocket('WINNING_CARD', (card) => setWinningCard(card))
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
   useSocket('DRAW_FULL_HAND', (hand) => setWhiteHand(hand))
@@ -63,6 +65,7 @@ export default function GameTable() {
         <p>black deck count: {blackDeckCount}</p>
         <button onClick={handleDrawBlackCard}>Draw New Black Card</button>
         <BlackCard text={blackCard} />
+        <WhiteCard text={winningCard} />
         <ChosenCards chosenCards={chosenCards} />
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
         <button onClick={handleDrawFullHand}>Draw Full Hand</button>
