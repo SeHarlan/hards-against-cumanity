@@ -12,6 +12,10 @@ export default function ChosenCards({ chosenCards }) {
   const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('PLAYERS', (players) => setPlayers(players))
+  useSocket('NEW_ROUND', () => {
+    setSubmitted(false)
+    setChosenCard('')
+  })
 
   const handleChange = ({ target }) => setChosenCard(target.value)
 
@@ -45,7 +49,7 @@ export default function ChosenCards({ chosenCards }) {
         <fieldset disabled={!currentPlayer?.czar || !chosenCards.length || submitted}>
           <legend>Chosen Cards</legend>
           {options}
-          <button onClick={handleClick}>This Is The One</button>
+          <button disabled={!chosenCard} onClick={handleClick}>This Is The One</button>
         </fieldset>
       </form>
     </>

@@ -12,7 +12,10 @@ export default function WhiteCardHand({ hand, setHand }) {
   const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('PLAYERS', (players) => setPlayers(players))
-  useSocket('NEW_ROUND', () => setSubmitted(false))
+  useSocket('NEW_ROUND', () => {
+    setSubmitted(false)
+    setChosenCard('')
+  })
 
   const handleChange = ({ target }) => setChosenCard(target.value)
 
@@ -37,9 +40,9 @@ export default function WhiteCardHand({ hand, setHand }) {
   return (
     <form>
       <fieldset disabled={currentPlayer?.czar || submitted}>
-        <legend>Your Cards</legend>
+        <legend>Your Cards ({currentPlayer?.name})</legend>
         {options}
-        <button onClick={handleClick}>Final Answer</button>
+        <button disabled={!chosenCard} onClick={handleClick}>Final Answer</button>
       </fieldset>
     </form >
   )

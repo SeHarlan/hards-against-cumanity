@@ -25,7 +25,7 @@ export default function GameTable() {
 
   const currentPlayer = players.find(player => player.id === socket.id)
 
-  useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards([...chosenCards, ...cards]))
+  useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards(cards))
   useSocket('WINNING_CARD', (card) => setWinningCard(card))
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
@@ -63,7 +63,7 @@ export default function GameTable() {
           </form>
         }
         <p>black deck count: {blackDeckCount}</p>
-        <button onClick={handleDrawBlackCard}>Draw New Black Card</button>
+        <button disabled={!currentPlayer?.czar} onClick={handleDrawBlackCard}>Draw New Black Card</button>
         <BlackCard text={blackCard} />
         <WhiteCard text={winningCard} />
         <ChosenCards chosenCards={chosenCards} />
