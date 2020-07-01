@@ -75,7 +75,10 @@ io.on('connection', socket => {
   socket.on('CHOOSE_WINNING_CARD', (card) => {
     parsedCard = JSON.parse(card)
     players.increaseScore(parsedCard.id)
+    io.emit('PLAYERS', players.players)
     io.emit('WINNING_CARD', parsedCard.card)
+    chosenWhiteCards = []
+    io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
   })
 
   socket.on('START_NEW_ROUND', () => {
