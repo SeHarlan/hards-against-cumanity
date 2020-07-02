@@ -1,6 +1,8 @@
 import { WhiteCard } from './Cards'
 import { useState } from 'react'
 import useSocket from '../lib/useSocket'
+import styles from '../styles/WhiteCardHand.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 
 export default function WhiteCardHand({ hand, setHand }) {

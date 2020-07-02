@@ -1,12 +1,16 @@
-import { getPathNames } from '../../lib/nextServices'
 import GameTable from '../game-table'
-
-import { tableName } from '../index'
 
 export default GameTable
 
-export async function getStaticPaths() {
-  const paths = getPathNames(tableName)
+export async function getStaticPaths(props) {
+  console.log(props)
+  const paths = [
+    {
+      params: {
+        name: 'table 2'
+      }
+    }
+  ]
   return {
     paths,
     fallback: false
@@ -14,10 +18,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-
   return {
     props: {
-
+      name: params.name
     }
   }
 }

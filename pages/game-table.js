@@ -12,7 +12,7 @@ const Players = withList(Player)
 export default function GameTable() {
 
   const [chosenCards, setChosenCards] = useState([])
-  const [blackCard, setBlackCard] = useState('...Loading')
+  const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [whiteHand, setWhiteHand] = useState([])
   const [blackDeckCount, setBlackDeckCount] = useState('')
   const [whiteDeckCount, setWhiteDeckCount] = useState('')

@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
 import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
 
 export const siteTitle = 'Hards Against Cumanity'
 
@@ -23,50 +22,25 @@ export default function Layout({ children, home }) {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
 
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet" />
+
         <title>Hards Against Cumanity</title>
       </Head>
       <header className={styles.header}>
-        {home ? (
-          <>
-            <img
-              src="/images/hac.png"
-              className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
-              alt={siteTitle}
-            />
-            <h1 className={utilStyles.heading2Xl}>{siteTitle}</h1>
-          </>
-        ) : (
-            <>
-              <Link href="/">
-                <a>
-                  <img
-                    src="/images/hac.png"
-                    className={`${styles.headerImage} ${utilStyles.borderCircle}`}
-                    alt={siteTitle}
-                  />
-                </a>
-              </Link>
-              <h2 className={utilStyles.headingLg}>
-                <Link href="/">
-                  <a className={utilStyles.colorInherit}>{siteTitle}</a>
-                </Link>
-              </h2>
-            </>
-          )}
+        <img
+          src="/images/hac.png"
+          className={styles.headerImage}
+          alt={siteTitle}
+        />
       </header>
 
       <main>
         {children}
       </main>
 
-      {!home && (
-        <footer className={styles.backToHome}>
-          <Link href="/">
-            <a>Back to Home</a>
-          </Link>
-        </footer>
-      )}
-
+      {/* <footer className={styles.backToHome}>
+        footer info goes here
+      </footer> */}
     </div>
   )
 }

@@ -13,18 +13,21 @@ const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
 
-
 const cards = getCards()
 let deck = new Deck(cards)
 const players = new Players()
-const disconectedUsernames = []
-let blackCard = 'Draw a black card'
+let disconectedUsernames = []
+let blackCard = 'Tell the Card Czar to draw a black card'
 let chosenWhiteCards = []
 
 io.on('connection', socket => {
+
+  // socket.on('CREATE_ROOM', (roomName) => {
+  //   socket.join(roomName)
+  // })
+
   socket.on('disconnect', () => {
     disconectedUsernames.push(socket.username)
-    console.log(disconectedUsernames)
   })
 
   io.emit('PLAYERS', players.players)
@@ -38,6 +41,8 @@ io.on('connection', socket => {
 
     if (disconectedUsernames.includes(name)) {
       added = players.reconnectPlayer(socket.id, name)
+      const updatedUsernames = disconectedUsernames.filter(username => username !== name)
+      disconectedUsernames = updatedUsernames
     } else {
       added = players.addPlayer(socket.id, name)
     }
@@ -51,7 +56,6 @@ io.on('connection', socket => {
     io.emit('PLAYERS', players.players)
     const currentPlayer = players.players.find(player => player.id === socket.id)
     socket.username = currentPlayer.name
-
   })
 
   socket.on('DRAW_BLACK_CARD', () => {

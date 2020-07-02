@@ -6,22 +6,16 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
-    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
   font-size: 18px;
+  background-color: rgba(252, 245, 255, 0.5);
 }
 
 a {
-  color: #0070f3;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
-}
-
-img {
-  max-width: 100%;
-  display: block;
 }
