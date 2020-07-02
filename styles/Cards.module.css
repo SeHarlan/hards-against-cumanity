@@ -1,9 +1,10 @@
 .card {
   width: 11rem;
   height: 16rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  margin: 1rem;
   border-radius: 0.6rem;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 
   display: flex;
   flex-direction: column;
@@ -18,9 +19,20 @@
 
 .white {
   background-color: white;
-  color: rgb(24, 24, 24)
+  color: rgb(24, 24, 24);
+  transition: 0.3s
 }
 
 .logo {
   width: 8rem;
+}
+
+
+
+.white:hover {
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.4);
+}
+
+.white:active {
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
 }

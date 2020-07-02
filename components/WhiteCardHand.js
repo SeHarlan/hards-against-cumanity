@@ -2,8 +2,7 @@ import { WhiteCard } from './Cards'
 import { useState } from 'react'
 import useSocket from '../lib/useSocket'
 import styles from '../styles/WhiteCardHand.module.css'
-import utilStyles from '../styles/utils.module.css'
-
+import layoutStyles from '../styles/Layout.module.css'
 
 export default function WhiteCardHand({ hand, setHand }) {
   const [chosenCard, setChosenCard] = useState('')
@@ -31,7 +30,7 @@ export default function WhiteCardHand({ hand, setHand }) {
 
   const options = hand.map(card => (
     <div key={card}>
-      <input type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
+      <input className={styles.radio} type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
       <label htmlFor={card}>
         <WhiteCard text={card} />
       </label>
@@ -40,12 +39,14 @@ export default function WhiteCardHand({ hand, setHand }) {
   ))
 
   return (
-    <form>
-      <fieldset disabled={currentPlayer?.czar || submitted}>
+    <form className={styles.form}>
+      <fieldset className={styles.fieldset} disabled={currentPlayer?.czar || submitted}>
         <legend>Your Cards ({currentPlayer?.name})</legend>
-        {options}
-        <button disabled={!chosenCard} onClick={handleClick}>Final Answer</button>
+        <section className={styles.hand}>
+          {options}
+        </section>
       </fieldset>
+      <button disabled={!chosenCard} onClick={handleClick}>Final Answer</button>
     </form >
   )
 

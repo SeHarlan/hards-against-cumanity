@@ -7,7 +7,7 @@ export function WhiteCard({ text }) {
   return (
     <div className={`${styles.card} ${styles.white}`}>
       <p className={utilStyles.noMargin} dangerouslySetInnerHTML={{ __html: text }}></p>
-      <img className={styles.logo} src="/images/HACblack.png" />
+      <img className={styles.logo} src="/images/blacklogo.png" />
     </div>
   )
 }
@@ -18,7 +18,7 @@ export function BlackCard({ text }) {
   return (
     <div className={`${styles.card} ${styles.black}`}>
       <p className={utilStyles.noMargin} dangerouslySetInnerHTML={{ __html: newText }}></p>
-      <img className={styles.logo} src="/images/HACwhite.png" />
+      <img className={styles.logo} src="/images/whitelogo.png" />
     </div>
   )
 }
