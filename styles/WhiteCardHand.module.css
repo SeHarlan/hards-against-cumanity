@@ -2,16 +2,14 @@
   display: none;
 }
 .radio:checked+label>div {
-  border: 3px dashed purple;
+  border: 2px dashed var(--black);
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
 }
 
-.handContainer {
+.hand {
+  height: 20rem;
   border: 4px inset;
   border-radius: 0.5rem;
-}
-
-.hand {
   padding: 0 0.8rem;
   display: flex;
   overflow: scroll;

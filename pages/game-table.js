@@ -46,30 +46,34 @@ export default function GameTable() {
 
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
-  const handleDrawFullHand = () => socket.emit('DRAW_FULL_HAND')
+
   const handleNameText = ({ target }) => setNameText(target.value)
   const handleJoinGame = (e) => {
     e.preventDefault()
     socket.emit('JOIN_GAME', nameText)
   }
 
-  const buttonDisabled = (!currentPlayer?.czar)
+  const buttonDisabled = (!currentPlayer?.czar || chosenCards.length)
 
   return (
     <Layout>
       <section>
-        <Players list={players} />
+
         {!currentPlayer &&
           <form onSubmit={handleJoinGame}>
-            <input type="text" value={nameText} onChange={handleNameText} />
-            <button>Join Game</button>
+            <button className={`${utilStyles.button} ${utilStyles.white}`} > Join Game</button>
+            <input
+              className={utilStyles.input}
+              type="text"
+              value={nameText}
+              onChange={handleNameText}
+              placeholder="Your Name"
+            />
             {invalid && <p>Username already taken</p>}
           </form>
         }
 
         <ChosenCards chosenCards={chosenCards} />
-
-        <button className={`${utilStyles.button} ${utilStyles.white} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleDrawBlackCard}>Draw New Black Card</button>
 
         <section className={styles.cardDisplayContainer}>
           <div>
@@ -84,10 +88,17 @@ export default function GameTable() {
           }
         </section>
 
+        <button className={`${utilStyles.button} ${utilStyles.white} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleDrawBlackCard}>Draw New Black Card</button>
+
+        <hr className={utilStyles.line} />
+
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
 
-        <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleDrawFullHand}>Draw Full Hand</button>
         <em className={styles.cardsRemaining}>~ {whiteDeckCount} white cards remaining ~</em>
+
+        <hr className={utilStyles.line} />
+
+        <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
       </section>
     </Layout>
   )

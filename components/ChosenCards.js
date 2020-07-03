@@ -43,19 +43,16 @@ export default function ChosenCards({ chosenCards }) {
 
   return (
     <>
-      {currentPlayer?.czar &&
-        <div>
-          <button className={`${utilStyles.button} ${utilStyles.white} ${!submitted && utilStyles.buttonDisabled}`} disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
-          <h3 className={styles.czar}>You are the Card Czar!</h3>
-        </div>
-      }
-      <form className={styles.handContainer}>
-        <p className={styles.label}>Chosen Cards</p>
-        <section className={styles.hand}>
-          {options}
-        </section>
-        <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>This Is The One</button>
+      <div className={!currentPlayer?.czar && utilStyles.hidden}>
+        <h3 className={styles.czar}>You are the Card Czar!</h3>
+        <button className={`${utilStyles.button} ${utilStyles.white} ${!submitted && utilStyles.buttonDisabled}`} disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
+      </div>
+
+      <p className={styles.label}>Chosen Cards</p>
+      <form className={styles.hand}>
+        {options}
       </form>
+      <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>This Is The One</button>
     </>
   )
 

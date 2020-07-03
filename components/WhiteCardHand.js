@@ -17,6 +17,7 @@ export default function WhiteCardHand({ hand, setHand }) {
     setSubmitted(false)
     setChosenCard('')
   })
+  const handleDrawFullHand = () => socket.emit('DRAW_FULL_HAND')
 
   const handleChange = ({ target }) => setChosenCard(target.value)
 
@@ -40,14 +41,18 @@ export default function WhiteCardHand({ hand, setHand }) {
 
   const buttonDisabled = (!chosenCard || currentPlayer?.czar || submitted)
 
-  return (
-    <form className={styles.handContainer}>
-      <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
-      <section className={styles.hand}>
-        {options}
-      </section>
-      <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>Final Answer</button>
+  return (<>
+    <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
+    <form className={styles.hand}>
+      {options}
     </form >
-  )
+
+    <div className={utilStyles.buttonContainer}>
+      <div></div>
+      <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>Final Answer</button>
+      <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleDrawFullHand}>Draw Full Hand</button>
+      <div></div>
+    </div>
+  </>)
 
 }
