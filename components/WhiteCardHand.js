@@ -2,7 +2,7 @@ import { WhiteCard } from './Cards'
 import { useState } from 'react'
 import useSocket from '../lib/useSocket'
 import styles from '../styles/WhiteCardHand.module.css'
-import layoutStyles from '../styles/Layout.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 export default function WhiteCardHand({ hand, setHand }) {
   const [chosenCard, setChosenCard] = useState('')
@@ -32,21 +32,21 @@ export default function WhiteCardHand({ hand, setHand }) {
     <div key={card}>
       <input className={styles.radio} type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
       <label htmlFor={card}>
-        <WhiteCard text={card} />
+        <WhiteCard notActive={currentPlayer?.czar || submitted} text={card} />
       </label>
       <br />
     </div>
   ))
 
+  const buttonDisabled = (!chosenCard || currentPlayer?.czar || submitted)
+
   return (
-    <form className={styles.form}>
-      <fieldset className={styles.fieldset} disabled={currentPlayer?.czar || submitted}>
-        <legend>Your Cards ({currentPlayer?.name})</legend>
-        <section className={styles.hand}>
-          {options}
-        </section>
-      </fieldset>
-      <button disabled={!chosenCard} onClick={handleClick}>Final Answer</button>
+    <form className={styles.handContainer}>
+      <legend>Your Cards ({currentPlayer?.name})</legend>
+      <section className={styles.hand}>
+        {options}
+      </section>
+      <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>Final Answer</button>
     </form >
   )
 

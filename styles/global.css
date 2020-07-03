@@ -19,3 +19,9 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+:root {
+  --initCardShadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  --black: rgb(24, 24, 24);
+  --white: white
+}

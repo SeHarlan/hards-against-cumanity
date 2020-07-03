@@ -6,6 +6,7 @@ import ChosenCards from '../components/ChosenCards';
 import useSocket from '../lib/useSocket';
 import withList from '../lib/withList'
 import Player from '../components/Player';
+import styles from '../styles/GameTable.module.css'
 
 const Players = withList(Player)
 
@@ -64,9 +65,11 @@ export default function GameTable() {
         }
         <p>black deck count: {blackDeckCount}</p>
         <button disabled={!currentPlayer?.czar} onClick={handleDrawBlackCard}>Draw New Black Card</button>
-        <BlackCard text={blackCard} />
-        <WhiteCard text={winningCard} />
         <ChosenCards chosenCards={chosenCards} />
+        <section className={styles.cardDisplay}>
+          <BlackCard text={blackCard} />
+          <WhiteCard text={winningCard} />
+        </section>
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
         <button onClick={handleDrawFullHand}>Draw Full Hand</button>
         <p>white deck count: {whiteDeckCount}</p>

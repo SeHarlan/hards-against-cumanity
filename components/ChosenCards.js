@@ -1,6 +1,8 @@
 import { WhiteCard } from './Cards'
 import { useState } from 'react'
 import useSocket from '../lib/useSocket'
+import styles from '../styles/WhiteCardHand.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 
 export default function ChosenCards({ chosenCards }) {
@@ -29,13 +31,15 @@ export default function ChosenCards({ chosenCards }) {
 
   const options = chosenCards.map(card => (
     <div key={card.id}>
-      <input type="radio" name="chosenCard" id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
+      <input className={styles.radio} type="radio" name="chosenCard" id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
       <label htmlFor={card.id}>
-        <WhiteCard text={card.card} />
+        <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} />
       </label>
       <br />
     </div>
   ))
+
+  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted)
 
   return (
     <>
@@ -45,12 +49,12 @@ export default function ChosenCards({ chosenCards }) {
           <button disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
         </div>
       }
-      <form >
-        <fieldset disabled={!currentPlayer?.czar || !chosenCards.length || submitted}>
-          <legend>Chosen Cards</legend>
+      <form className={styles.handContainer}>
+        <legend>Chosen Cards</legend>
+        <section className={styles.hand}>
           {options}
-          <button disabled={!chosenCard} onClick={handleClick}>This Is The One</button>
-        </fieldset>
+        </section>
+        <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>This Is The One</button>
       </form>
     </>
   )

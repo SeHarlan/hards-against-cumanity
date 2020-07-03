@@ -2,8 +2,49 @@
   margin: 0
 }
 
+.noPadding {
+  padding: 0;
+}
+
 .list {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.button {
+  display: block;
+  border: 3px black outset;
+  border-radius: 0.3rem;
+  margin: 1rem auto;
+  font-family: inherit;
+  transition: 0.2s;
+  outline: none;
+}
+
+
+.white {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.black {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+
+.button:hover {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button:active {
+  border: 3px rgb(154, 154, 154) inset;
+  box-shadow: 0 0 0;
+}
+
+.buttonDisabled {
+  background-color: rgb(165, 165, 165);
+  border: 4px grey inset;
+  box-shadow: 0 0 0;
 }

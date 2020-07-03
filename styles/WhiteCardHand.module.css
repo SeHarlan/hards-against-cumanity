@@ -6,17 +6,14 @@
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
 }
 
-.fieldset {
-  padding: 0 0 0 1rem;
+.handContainer {
   border: 4px inset;
   border-radius: 0.5rem;
 }
 
 .hand {
-  max-width: 60rem;
-  padding: 0;
+  padding: 0 0.8rem;
   display: flex;
-  align-items: center;
   overflow: scroll;
 }
 
