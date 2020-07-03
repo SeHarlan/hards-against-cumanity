@@ -42,7 +42,7 @@ export default function WhiteCardHand({ hand, setHand }) {
 
   return (
     <form className={styles.handContainer}>
-      <legend>Your Cards ({currentPlayer?.name})</legend>
+      <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
       <section className={styles.hand}>
         {options}
       </section>

@@ -16,15 +16,16 @@
   width: 8rem;
 }
 
+.card:hover {
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.card:active {
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+}
 .notActive {
+  cursor: inherit !important;
   border: inherit !important;
   box-shadow: var(--initCardShadow) !important;
-}
-
-.white:hover {
-  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.4);
-}
-
-.white:active {
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
 }

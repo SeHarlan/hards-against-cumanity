@@ -14,9 +14,13 @@
 
 .button {
   display: block;
-  border: 3px black outset;
-  border-radius: 0.3rem;
   margin: 1rem auto;
+  padding: 0.2rem 0.6rem;
+
+  border: 2px rgba(60, 60, 60, 0.2) dotted;
+  border-radius: 0.3rem;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+
   font-family: inherit;
   transition: 0.2s;
   outline: none;
@@ -35,16 +39,16 @@
 
 
 .button:hover {
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .button:active {
-  border: 3px rgb(154, 154, 154) inset;
   box-shadow: 0 0 0;
 }
 
 .buttonDisabled {
-  background-color: rgb(165, 165, 165);
-  border: 4px grey inset;
-  box-shadow: 0 0 0;
+  filter: blur(1px);
+  box-shadow: 0 0 0 !important;
+  cursor: inherit !important;
 }

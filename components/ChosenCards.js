@@ -45,12 +45,12 @@ export default function ChosenCards({ chosenCards }) {
     <>
       {currentPlayer?.czar &&
         <div>
-          <h3>You are the Card Czar</h3>
-          <button disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
+          <button className={`${utilStyles.button} ${utilStyles.white} ${!submitted && utilStyles.buttonDisabled}`} disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
+          <h3 className={styles.czar}>You are the Card Czar!</h3>
         </div>
       }
       <form className={styles.handContainer}>
-        <legend>Chosen Cards</legend>
+        <p className={styles.label}>Chosen Cards</p>
         <section className={styles.hand}>
           {options}
         </section>

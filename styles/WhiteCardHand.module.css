@@ -17,3 +17,12 @@
   overflow: scroll;
 }
 
+.label {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.czar {
+  text-align: center;
+}
+

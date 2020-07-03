@@ -7,6 +7,7 @@ import useSocket from '../lib/useSocket';
 import withList from '../lib/withList'
 import Player from '../components/Player';
 import styles from '../styles/GameTable.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 const Players = withList(Player)
 
@@ -52,6 +53,8 @@ export default function GameTable() {
     socket.emit('JOIN_GAME', nameText)
   }
 
+  const buttonDisabled = (!currentPlayer?.czar)
+
   return (
     <Layout>
       <section>
@@ -63,16 +66,28 @@ export default function GameTable() {
             {invalid && <p>Username already taken</p>}
           </form>
         }
-        <p>black deck count: {blackDeckCount}</p>
-        <button disabled={!currentPlayer?.czar} onClick={handleDrawBlackCard}>Draw New Black Card</button>
+
         <ChosenCards chosenCards={chosenCards} />
-        <section className={styles.cardDisplay}>
-          <BlackCard text={blackCard} />
-          <WhiteCard text={winningCard} />
+
+        <button className={`${utilStyles.button} ${utilStyles.white} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleDrawBlackCard}>Draw New Black Card</button>
+
+        <section className={styles.cardDisplayContainer}>
+          <div>
+            <BlackCard text={blackCard} />
+            <em className={styles.cardsRemaining}>~ {blackDeckCount} remaining ~</em>
+          </div>
+          {winningCard &&
+            <div>
+              <WhiteCard notActive={true} text={winningCard} />
+              <em className={styles.cardsRemaining} >~ Winning Card ~</em>
+            </div>
+          }
         </section>
+
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
-        <button onClick={handleDrawFullHand}>Draw Full Hand</button>
-        <p>white deck count: {whiteDeckCount}</p>
+
+        <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleDrawFullHand}>Draw Full Hand</button>
+        <em className={styles.cardsRemaining}>~ {whiteDeckCount} white cards remaining ~</em>
       </section>
     </Layout>
   )
