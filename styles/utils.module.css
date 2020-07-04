@@ -55,6 +55,14 @@
   color: var(--white);
 }
 
+.cardsRemaining {
+  display: block;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: lighter;
+  font-size: small;
+}
+
 
 .button:hover {
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);

@@ -4,14 +4,6 @@
   margin: 1rem;
 }
 
-.cardsRemaining {
-  display: block;
-  padding: 0.5rem;
-  text-align: center;
-  font-weight: lighter;
-  font-size: small;
-}
-
 .players {
   display: grid;
   justify-content: center;

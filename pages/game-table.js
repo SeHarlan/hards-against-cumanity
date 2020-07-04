@@ -8,6 +8,7 @@ import withList from '../lib/withList'
 import Player from '../components/Player';
 import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
+import DangerZone from '../components/DangerZone';
 
 const Players = withList(Player)
 
@@ -17,7 +18,6 @@ export default function GameTable() {
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [whiteHand, setWhiteHand] = useState([])
   const [blackDeckCount, setBlackDeckCount] = useState('')
-  const [whiteDeckCount, setWhiteDeckCount] = useState('')
   const [nameText, setNameText] = useState('')
   const [players, setPlayers] = useState([])
   const [invalid, setInvalid] = useState(false)
@@ -32,12 +32,9 @@ export default function GameTable() {
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
   useSocket('DRAW_FULL_HAND', (hand) => setWhiteHand(hand))
-  useSocket('DRAW_ONE_CARD', (cards) => {
-    setWhiteHand(cards)
-  })
+  useSocket('DRAW_ONE_CARD', (hand) => setWhiteHand(hand))
 
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
-  useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
 
   useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => setChosenCards([]))
@@ -47,7 +44,6 @@ export default function GameTable() {
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
 
-  const handleNameText = ({ target }) => setNameText(target.value)
   const handleJoinGame = (e) => {
     e.preventDefault()
     socket.emit('JOIN_GAME', nameText)
@@ -59,18 +55,20 @@ export default function GameTable() {
     <Layout>
       <section>
 
-        {!currentPlayer &&
-          <form onSubmit={handleJoinGame}>
-            <button className={`${utilStyles.button} ${utilStyles.white}`} > Join Game</button>
+        {!currentPlayer && (<>
+          <form className={utilStyles.buttonContainer} onSubmit={handleJoinGame}>
+            <div />
             <input
               className={utilStyles.input}
               type="text"
               value={nameText}
-              onChange={handleNameText}
+              onChange={({ target }) => setNameText(target.value)}
               placeholder="Your Name"
             />
-            {invalid && <p>Username already taken</p>}
+            <button className={`${utilStyles.button} ${utilStyles.white}`} > Join Game</button>
           </form>
+          {invalid && <p className={utilStyles.cardsRemaining}>Username already taken</p>}
+        </>)
         }
 
         <ChosenCards chosenCards={chosenCards} />
@@ -78,7 +76,7 @@ export default function GameTable() {
         <section className={styles.cardDisplayContainer}>
           <div>
             <BlackCard text={blackCard} />
-            <em className={styles.cardsRemaining}>~ {blackDeckCount} remaining ~</em>
+            <em className={utilStyles.cardsRemaining}>~ {blackDeckCount} remaining ~</em>
           </div>
           {winningCard &&
             <div>
@@ -94,11 +92,12 @@ export default function GameTable() {
 
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
 
-        <em className={styles.cardsRemaining}>~ {whiteDeckCount} white cards remaining ~</em>
-
         <hr className={utilStyles.line} />
 
         <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
+
+        <DangerZone />
+
       </section>
     </Layout>
   )
