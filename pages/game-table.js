@@ -32,8 +32,8 @@ export default function GameTable() {
 
   useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
   useSocket('DRAW_FULL_HAND', (hand) => setWhiteHand(hand))
-  useSocket('DRAW_ONE_CARD', (card) => {
-    setWhiteHand(prev => [...prev, card[0]])
+  useSocket('DRAW_ONE_CARD', (cards) => {
+    setWhiteHand(cards)
   })
 
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))

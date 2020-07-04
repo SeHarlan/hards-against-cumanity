@@ -27,6 +27,12 @@ a:hover {
   --breakOne: 600px;
 }
 
+@media only screen and (min-width: 600px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
 @media only screen and (min-width: 1000px) {
   html, body {
     font-size: 16px;
