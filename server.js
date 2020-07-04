@@ -41,18 +41,27 @@ io.on('connection', socket => {
 
     if (disconectedUsernames.includes(name)) {
       added = players.reconnectPlayer(socket.id, name)
+
+      const cards = players.getHand(socket.id)
+      socket.emit('DRAW_FULL_HAND', cards)
+
       const updatedUsernames = disconectedUsernames.filter(username => username !== name)
       disconectedUsernames = updatedUsernames
     } else {
       added = players.addPlayer(socket.id, name)
+
+      const cards = deck.drawWhiteCards(7)
+      players.drawFullHand(socket.id, cards)
+      socket.emit('DRAW_FULL_HAND', cards)
     }
 
     if (!added) {
       socket.emit('INVALID_SIGN_UP')
       return
     }
-    socket.emit('DRAW_FULL_HAND', deck.drawWhiteCards(7))
+
     io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
+
     io.emit('PLAYERS', players.players)
     const currentPlayer = players.players.find(player => player.id === socket.id)
     socket.username = currentPlayer.name
@@ -65,7 +74,9 @@ io.on('connection', socket => {
   })
 
   socket.on('DRAW_FULL_HAND', () => {
-    socket.emit('DRAW_FULL_HAND', deck.drawWhiteCards(7))
+    const cards = deck.drawWhiteCards(7)
+    players.drawFullHand(socket.id, cards)
+    socket.emit('DRAW_FULL_HAND', cards)
     io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
   })
 
@@ -73,7 +84,10 @@ io.on('connection', socket => {
     cardWithID = { card, id: socket.id }
     chosenWhiteCards.push(cardWithID)
     io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
-    socket.emit("DRAW_ONE_CARD", deck.drawWhiteCards(1))
+
+    const [newCard] = deck.drawWhiteCards(1)
+    const hand = players.drawOneCard(socket.id, card, newCard)
+    socket.emit("DRAW_ONE_CARD", hand)
   })
 
   socket.on('CHOOSE_WINNING_CARD', (card) => {
