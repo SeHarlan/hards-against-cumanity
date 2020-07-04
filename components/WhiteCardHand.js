@@ -8,11 +8,13 @@ export default function WhiteCardHand({ hand, setHand }) {
   const [chosenCard, setChosenCard] = useState('')
   const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
+  const [whiteDeckCount, setWhiteDeckCount] = useState('')
 
   const socket = useSocket()
   const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('PLAYERS', (players) => setPlayers(players))
+  useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
     setChosenCard('')
@@ -50,9 +52,11 @@ export default function WhiteCardHand({ hand, setHand }) {
     <div className={utilStyles.buttonContainer}>
       <div></div>
       <button className={`${utilStyles.button} ${utilStyles.black} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleClick}>Final Answer</button>
-      <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleDrawFullHand}>Draw Full Hand</button>
+      <button disabled={!currentPlayer} className={`${utilStyles.button} ${utilStyles.white} ${!currentPlayer && utilStyles.buttonDisabled}`} onClick={handleDrawFullHand}>Draw Full Hand</button>
       <div></div>
     </div>
+
+    <em className={utilStyles.cardsRemaining}>~ {whiteDeckCount} white cards remaining ~</em>
   </>)
 
 }
