@@ -7,15 +7,17 @@
 }
 
 .hand {
-  height: 20rem;
+  display: flex;
+  align-items: center;
+  height: 19.5rem;
   border: 4px inset;
   border-radius: 0.5rem;
   padding: 0 0.8rem;
-  display: flex;
   overflow: scroll;
 }
 
 .label {
+  font-size: medium;
   text-align: center;
   text-decoration: underline;
 }

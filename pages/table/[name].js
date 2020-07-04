@@ -3,7 +3,6 @@ import GameTable from '../game-table'
 export default GameTable
 
 export async function getStaticPaths(props) {
-  console.log(props)
   const paths = [
     {
       params: {

@@ -1,6 +1,6 @@
 .container {
-  max-width: 90rem;
-  padding: 0 2rem;
+  max-width: 94rem;
+  padding: 0 1rem;
   margin: 1rem auto 3rem;
 }
 
@@ -13,4 +13,16 @@
 .headerImage {
   width: 20rem;
   margin-bottom: 2rem;
+}
+
+@media only screen and (min-width: 730px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .container {
+    padding: 0 4rem;
+  }
 }
