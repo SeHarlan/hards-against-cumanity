@@ -9,7 +9,6 @@ import Player from '../components/Player';
 import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
 import DangerZone from '../components/DangerZone';
-import Confetti from 'react-confetti'
 import WinningModal from '../components/WinningModal';
 
 const Players = withList(Player)
@@ -111,8 +110,6 @@ export default function GameTable() {
         <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
 
         {currentPlayer && <DangerZone />}
-
-        {/* {currentPlayer?.name === winner && <Confetti />} */}
 
         {winner && <WinningModal winnerName={winner} winner={currentPlayer?.name === winner} />}
 
