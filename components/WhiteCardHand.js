@@ -35,19 +35,19 @@ export default function WhiteCardHand({ hand, setHand }) {
     <div key={card}>
       <input className={styles.radio} type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
       <label htmlFor={card}>
-        <WhiteCard notActive={currentPlayer?.czar || submitted} text={card} />
+        <WhiteCard notActive={currentPlayer?.czar || submitted || !currentPlayer} text={card} />
       </label>
       <br />
     </div>
   ))
 
-  const buttonDisabled = (!chosenCard || currentPlayer?.czar || submitted)
+  const buttonDisabled = (!chosenCard || currentPlayer?.czar || submitted || !currentPlayer)
 
   return (<>
     <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
     <form className={styles.hand}>
       {options}
-    </form >
+    </form>
 
     <div className={utilStyles.buttonContainer}>
       <div></div>

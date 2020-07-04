@@ -18,7 +18,8 @@
 
 .line {
   border: 1px dashed var(--black);
-  margin: 3rem -1rem 0 -1rem
+  margin: 3rem -0.3rem 0 -0.3rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .button {
@@ -79,10 +80,15 @@
   cursor: inherit !important;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 730px) {
   .buttonContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: 2rem;
+  }
+  .line {
+    border: 1px dashed var(--black);
+    margin: 3rem -1rem 0 -1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   }
 }

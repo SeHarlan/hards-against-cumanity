@@ -1,13 +1,22 @@
 import { useState } from "react"
 import utilStyles from '../styles/utils.module.css'
+import useSocket from "../lib/useSocket"
 
 export default function DangerZone() {
   const [checked, setChecked] = useState(false)
   const [nameText, setNameText] = useState('')
 
+  const socket = useSocket()
+
+  const handleBlackShuffle = () => { socket.emit('SHUFFLE_BLACK_DECK') }
+  const handleWhiteShuffle = () => { socket.emit('SHUFFLE_WHITE_DECK') }
+
   const handleBootOut = (e) => {
     e.preventDefault()
+    socket.emit('BOOT_OUT', nameText)
   }
+
+  const handleRestart = () => { socket.emit('RESTART_GAME') }
 
   return (
     <section>
@@ -15,8 +24,11 @@ export default function DangerZone() {
       <label htmlFor="danger">Danger Zone</label>
 
       {checked && (<div>
-        <button className={`${utilStyles.button} ${utilStyles.black}`}>Reshuffle Black Deck</button>
-        <button className={`${utilStyles.button} ${utilStyles.white}`}> Reshuffle White Deck</button>
+        <div className={utilStyles.buttonContainer}>
+          <div />
+          <button className={`${utilStyles.button} ${utilStyles.black}`} onClick={handleBlackShuffle}>Shuffle Black Deck</button>
+          <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleWhiteShuffle}>Shuffle White Deck</button>
+        </div>
         <form className={utilStyles.buttonContainer} onSubmit={handleBootOut}>
           <div />
           <input
@@ -27,7 +39,7 @@ export default function DangerZone() {
             placeholder="Player's Username" />
           <button className={`${utilStyles.button} ${utilStyles.black}`}>Give 'em the boot!</button>
         </form>
-        <button className={`${utilStyles.button} ${utilStyles.white}`}>Restart Game</button>
+        <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleRestart}>Restart Game</button>
       </div>)}
     </section>
   )

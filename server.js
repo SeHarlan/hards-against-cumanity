@@ -17,7 +17,7 @@ const cards = getCards()
 let deck = new Deck(cards)
 const players = new Players()
 let disconectedUsernames = []
-let blackCard = 'Tell the Card Czar to draw a black card'
+let blackCard = 'Tell the Card Czar to draw a black card!'
 let chosenWhiteCards = []
 
 io.on('connection', socket => {
@@ -89,7 +89,7 @@ io.on('connection', socket => {
 
     const [newCard] = deck.drawWhiteCards(1)
     const hand = players.drawOneCard(socket.id, card, newCard)
-    socket.emit("DRAW_ONE_CARD", hand)
+    socket.emit('DRAW_ONE_CARD', hand)
     io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
   })
 
@@ -110,6 +110,41 @@ io.on('connection', socket => {
     io.emit('WINNING_CARD', '')
     io.emit('PLAYERS', players.players)
     io.emit('NEW_ROUND')
+  })
+
+  socket.on('SHUFFLE_WHITE_DECK', () => {
+    deck.shuffleWhiteDeck()
+    io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
+  })
+
+  socket.on('SHUFFLE_BLACK_DECK', () => {
+    deck.shuffleBlackDeck()
+    io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
+    blackCard = 'Czar...can you draw a card sometime today?'
+    io.emit('DRAW_BLACK_CARD', blackCard)
+  })
+
+  socket.on('BOOT_OUT', (username) => {
+    players.changeCzar()
+    players.removePlayer(username)
+    io.emit('PLAYERS', players.players)
+  })
+
+  socket.on('RESTART_GAME', () => {
+    deck = new Deck(cards)
+    blackCard = 'Czar! hurry and draw a card already.'
+    io.emit('DRAW_BLACK_CARD', blackCard)
+    io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
+    io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
+
+    chosenWhiteCards = []
+    io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
+    io.emit('WINNING_CARD', '')
+    io.emit('DRAW_FULL_HAND', [])
+    io.emit('NEW_ROUND')
+
+    players.restartGame()
+    io.emit('PLAYERS', players.players)
   })
 })
 

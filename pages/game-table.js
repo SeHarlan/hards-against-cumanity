@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 import { BlackCard, WhiteCard } from '../components/Cards';
 import WhiteCardHand from '../components/WhiteCardHand';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ChosenCards from '../components/ChosenCards';
 import useSocket from '../lib/useSocket';
 import withList from '../lib/withList'
@@ -9,8 +9,12 @@ import Player from '../components/Player';
 import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
 import DangerZone from '../components/DangerZone';
+import Confetti from 'react-confetti'
+import WinningModal from '../components/WinningModal';
 
 const Players = withList(Player)
+
+const winningScore = 7
 
 export default function GameTable() {
 
@@ -22,6 +26,7 @@ export default function GameTable() {
   const [players, setPlayers] = useState([])
   const [invalid, setInvalid] = useState(false)
   const [winningCard, setWinningCard] = useState('')
+  const [winner, setWinner] = useState(null)
 
   const socket = useSocket()
 
@@ -37,9 +42,18 @@ export default function GameTable() {
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
 
   useSocket('PLAYERS', (players) => setPlayers(players))
-  useSocket('NEW_ROUND', () => setChosenCards([]))
+  useSocket('NEW_ROUND', () => {
+    setChosenCards([])
+    setWinner(null)
+  })
 
   useSocket('INVALID_SIGN_UP', () => setInvalid(true))
+
+  useEffect(() => {
+    players.forEach(player => {
+      if (player.score >= winningScore) setWinner(player.name)
+    })
+  }, [players])
 
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
@@ -96,7 +110,11 @@ export default function GameTable() {
 
         <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
 
-        <DangerZone />
+        {currentPlayer && <DangerZone />}
+
+        {/* {currentPlayer?.name === winner && <Confetti />} */}
+
+        {winner && <WinningModal winnerName={winner} winner={currentPlayer?.name === winner} />}
 
       </section>
     </Layout>
