@@ -125,7 +125,9 @@ io.on('connection', socket => {
   })
 
   socket.on('BOOT_OUT', (username) => {
-    players.changeCzar()
+    const currentCzar = players.players.find(player => player.czar)
+    if (currentCzar.name === username) players.changeCzar()
+
     players.removePlayer(username)
     io.emit('PLAYERS', players.players)
   })
