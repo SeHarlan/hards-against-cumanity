@@ -27,17 +27,20 @@ export default function ChosenCards({ chosenCards }) {
     socket.emit('CHOOSE_WINNING_CARD', chosenCard)
   }
 
+  const hideCards = (chosenCards.length !== players.length - 1)
+  console.log(hideCards)
+
   const options = chosenCards.map(card => (
     <div key={card.id}>
       <input className={styles.radio} type="radio" name="chosenCard" id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
       <label htmlFor={card.id}>
-        <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} />
+        <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
       </label>
       <br />
     </div>
   ))
 
-  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted)
+  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
 
   return (
     <>
