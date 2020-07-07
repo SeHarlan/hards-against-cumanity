@@ -92,8 +92,6 @@ export default function GameTable() {
 
         <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
 
-        <hr className={utilStyles.line} />
-
         <ChosenCards chosenCards={chosenCards} />
 
         <h3 className={styles.czar}>{cardCzarMessage}</h3>
