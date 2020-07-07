@@ -27,8 +27,6 @@ export default function ChosenCards({ chosenCards }) {
     socket.emit('CHOOSE_WINNING_CARD', chosenCard)
   }
 
-  const handleNewRound = () => socket.emit('START_NEW_ROUND')
-
   const options = chosenCards.map(card => (
     <div key={card.id}>
       <input className={styles.radio} type="radio" name="chosenCard" id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
@@ -45,7 +43,7 @@ export default function ChosenCards({ chosenCards }) {
     <>
       <div className={!currentPlayer?.czar && utilStyles.hidden}>
         <h3 className={styles.czar}>You are the Card Czar!</h3>
-        <button className={`${utilStyles.button} ${utilStyles.white} ${!submitted && utilStyles.buttonDisabled}`} disabled={!submitted} onClick={handleNewRound}>Start New Round</button>
+
       </div>
 
       <p className={styles.label}>Chosen Cards</p>
