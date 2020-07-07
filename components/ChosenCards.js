@@ -41,11 +41,6 @@ export default function ChosenCards({ chosenCards }) {
 
   return (
     <>
-      <div className={!currentPlayer?.czar && utilStyles.hidden}>
-        <h3 className={styles.czar}>You are the Card Czar!</h3>
-
-      </div>
-
       <p className={styles.label}>Chosen Cards</p>
       <form className={styles.hand}>
         {options}
