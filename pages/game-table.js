@@ -26,6 +26,7 @@ export default function GameTable() {
   const [invalid, setInvalid] = useState(false)
   const [winningCard, setWinningCard] = useState('')
   const [winner, setWinner] = useState(null)
+  const [cardCzar, setCardCzar] = useState('Nobody')
 
   const socket = useSocket()
 
@@ -51,11 +52,14 @@ export default function GameTable() {
   useEffect(() => {
     players.forEach(player => {
       if (player.score >= winningScore) setWinner(player.name)
+      if (player.czar) setCardCzar(player.name)
     })
   }, [players])
 
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
+
+  const handleNewRound = () => socket.emit('START_NEW_ROUND')
 
   const handleJoinGame = (e) => {
     e.preventDefault()
@@ -63,6 +67,8 @@ export default function GameTable() {
   }
 
   const buttonDisabled = (!currentPlayer?.czar || chosenCards.length)
+
+  const cardCzarMessage = currentPlayer?.czar ? "You are the Card Czar!" : `${cardCzar} is the Card Czar.`
 
   return (
     <Layout>
@@ -84,30 +90,37 @@ export default function GameTable() {
         </>)
         }
 
+        <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
+
         <ChosenCards chosenCards={chosenCards} />
+
+        <h3 className={styles.czar}>{cardCzarMessage}</h3>
 
         <section className={styles.cardDisplayContainer}>
           <div>
             <BlackCard text={blackCard} />
             <em className={utilStyles.cardsRemaining}>~ {blackDeckCount} remaining ~</em>
           </div>
-          {winningCard &&
+
+          {winningCard && (<>
+            <button className={`${utilStyles.button} ${utilStyles.white} ${!currentPlayer?.czar && utilStyles.noDisplay} ${utilStyles.newRoundButtonLargeScreen}`} onClick={handleNewRound}>Start New Round</button>
+
             <div>
               <WhiteCard notActive={true} text={winningCard} />
-              <em className={styles.cardsRemaining} >~ Winning Card ~</em>
+              <em className={utilStyles.cardsRemaining} >~ Winning Card ~</em>
             </div>
-          }
+
+          </>)}
+
         </section>
+
+        <button className={`${utilStyles.button} ${utilStyles.white} ${!currentPlayer?.czar && utilStyles.noDisplay} ${utilStyles.newRoundButtonSmallScreen} ${!winningCard && utilStyles.buttonDisabled}`} disabled={!winningCard} onClick={handleNewRound}>Start New Round</button>
 
         <button className={`${utilStyles.button} ${utilStyles.white} ${buttonDisabled && utilStyles.buttonDisabled}`} disabled={buttonDisabled} onClick={handleDrawBlackCard}>Draw New Black Card</button>
 
         <hr className={utilStyles.line} />
 
         <WhiteCardHand hand={whiteHand} setHand={setWhiteHand} />
-
-        <hr className={utilStyles.line} />
-
-        <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
 
         {currentPlayer && <DangerZone />}
 

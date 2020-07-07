@@ -125,22 +125,20 @@ io.on('connection', socket => {
   })
 
   socket.on('BOOT_OUT', (username) => {
-    players.changeCzar()
+    const currentCzar = players.players.find(player => player.czar)
+    if (currentCzar.name === username) players.changeCzar()
+
     players.removePlayer(username)
     io.emit('PLAYERS', players.players)
   })
 
   socket.on('RESTART_GAME', () => {
-    deck = new Deck(cards)
     blackCard = 'Czar! hurry and draw a card already.'
     io.emit('DRAW_BLACK_CARD', blackCard)
-    io.emit('BLACK_DECK_COUNT', deck.blackDeck.length)
-    io.emit('WHITE_DECK_COUNT', deck.whiteDeck.length)
 
     chosenWhiteCards = []
     io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
     io.emit('WINNING_CARD', '')
-    io.emit('DRAW_FULL_HAND', [])
     io.emit('NEW_ROUND')
 
     players.restartGame()

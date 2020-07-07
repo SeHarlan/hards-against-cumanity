@@ -2,10 +2,15 @@ import React from 'react'
 import styles from '../styles/Cards.module.css'
 import utilStyles from '../styles/utils.module.css'
 
-export function WhiteCard({ notActive, text }) {
+export function WhiteCard({ notActive, text, blank }) {
   if (!text) return (<></>)
+
+  if (blank) text = ''
+
+  const disabled = notActive || blank
+
   return (
-    <div className={`${styles.card} ${utilStyles.white} ${notActive && styles.notActive}`}>
+    <div className={`${styles.card} ${utilStyles.white} ${disabled && styles.notActive}`}>
       <p className={utilStyles.noMargin} dangerouslySetInnerHTML={{ __html: text }}></p>
       <img className={styles.logo} src="/images/blacklogo.png" />
     </div>

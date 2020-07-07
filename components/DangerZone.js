@@ -14,6 +14,7 @@ export default function DangerZone() {
   const handleBootOut = (e) => {
     e.preventDefault()
     socket.emit('BOOT_OUT', nameText)
+    setNameText('')
   }
 
   const handleRestart = () => { socket.emit('RESTART_GAME') }
