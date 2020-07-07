@@ -28,7 +28,6 @@ export default function ChosenCards({ chosenCards }) {
   }
 
   const hideCards = (chosenCards.length !== players.length - 1)
-  console.log(hideCards)
 
   const options = chosenCards.map(card => (
     <div key={card.id}>
