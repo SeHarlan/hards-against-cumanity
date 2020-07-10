@@ -49,6 +49,7 @@ io.on('connection', socket => {
 
       const cards = players.getHand(socket.id)
       socket.emit('DRAW_FULL_HAND', cards)
+      socket.emit('NEW_ROUND')
 
       const updatedUsernames = disconectedUsernames.filter(username => username !== name)
       disconectedUsernames = updatedUsernames

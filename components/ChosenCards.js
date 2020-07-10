@@ -3,6 +3,7 @@ import { useState } from 'react'
 import useSocket from '../lib/useSocket'
 import styles from '../styles/WhiteCardHand.module.css'
 import utilStyles from '../styles/utils.module.css'
+import { skipMessage } from '../components/SkipTurnModal'
 
 
 export default function ChosenCards({ chosenCards }) {
@@ -29,15 +30,35 @@ export default function ChosenCards({ chosenCards }) {
 
   const hideCards = (chosenCards.length !== players.length - 1)
 
-  const options = chosenCards.map(card => (
-    <div key={card.id}>
-      <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
-      <label htmlFor={card.id}>
-        <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
+  let options = chosenCards
+    .filter(card => card.card !== skipMessage)
+    .map(card => (
+      <div key={card.id}>
+        <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
+        <label htmlFor={card.id}>
+          <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
+        </label>
+      </div>
+    ))
+
+  const skippingCard = {
+    card: "Sadly all players have skipped this stupid card. No one gets the point. The Czar must choose this card to continue.",
+    id: skipMessage
+  }
+
+  const allSkipped = (
+    <div key={skippingCard.id}>
+      <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(skippingCard)} id={skippingCard.id} value={JSON.stringify(skippingCard)} onChange={handleChange} />
+      <label htmlFor={skippingCard.id}>
+        <WhiteCard
+          notActive={false}
+          text={skippingCard.card}
+          blank={false} />
       </label>
-      <br />
     </div>
-  ))
+  )
+
+  if (chosenCards.length && !options.length && !hideCards) options = allSkipped
 
   const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
 

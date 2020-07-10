@@ -9,7 +9,7 @@ export default function WinningModal({ winnerName, winner }) {
   const handleRestart = () => { socket.emit('RESTART_GAME') }
 
   if (winner) return (<div className={styles.modal}>
-    {winner && <Confetti />}
+    <Confetti />
     <section className={styles.section}>
       <h1>You Did It, You F@#king Did It!</h1>
       <button
@@ -21,7 +21,6 @@ export default function WinningModal({ winnerName, winner }) {
   </div>)
 
   return (<div className={styles.modal}>
-    {winner && <Confetti />}
     <section className={styles.section}>
       <h4>{winnerName} has won.</h4>
       <h1>You? Well you are a loser.</h1>
