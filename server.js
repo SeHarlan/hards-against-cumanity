@@ -29,7 +29,7 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     disconectedUsernames.push(socket.username)
     const index = chosenWhiteCards.findIndex(card => card.id === socket.id)
-    chosenWhiteCards.splice(index, 1)
+    if (index !== -1) chosenWhiteCards.splice(index, 1)
     io.emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
   })
 
@@ -142,6 +142,7 @@ io.on('connection', socket => {
     io.emit('NEW_ROUND')
 
     players.restartGame()
+    players.changeCzar()
     io.emit('PLAYERS', players.players)
   })
 })

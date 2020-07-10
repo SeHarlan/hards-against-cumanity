@@ -13,10 +13,10 @@
 
 .section {
   padding: 3rem 10vw;
-    z-index: 3;
-    border: 2px rgba(60, 60, 60, 0.2) dotted;
-    border-radius: 1rem;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-    background-color: var(--white);
-    text-align: center;
+  z-index: 3;
+  border: 4px rgba(60, 60, 60, 0.2) dotted;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: var(--white);
+  text-align: center;
 }

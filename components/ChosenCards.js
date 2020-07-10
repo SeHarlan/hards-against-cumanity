@@ -6,7 +6,7 @@ import utilStyles from '../styles/utils.module.css'
 
 
 export default function ChosenCards({ chosenCards }) {
-  const [chosenCard, setChosenCard] = useState('')
+  const [chosenCard, setChosenCard] = useState(null)
   const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
 
@@ -16,7 +16,7 @@ export default function ChosenCards({ chosenCards }) {
   useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
-    setChosenCard('')
+    setChosenCard(null)
   })
 
   const handleChange = ({ target }) => setChosenCard(target.value)
@@ -31,7 +31,7 @@ export default function ChosenCards({ chosenCards }) {
 
   const options = chosenCards.map(card => (
     <div key={card.id}>
-      <input className={styles.radio} type="radio" name="chosenCard" id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
+      <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
       <label htmlFor={card.id}>
         <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
       </label>

@@ -4,8 +4,8 @@ import useSocket from '../lib/useSocket'
 import styles from '../styles/WhiteCardHand.module.css'
 import utilStyles from '../styles/utils.module.css'
 
-export default function WhiteCardHand({ hand, setHand }) {
-  const [chosenCard, setChosenCard] = useState('')
+export default function WhiteCardHand({ hand }) {
+  const [chosenCard, setChosenCard] = useState(null)
   const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [whiteDeckCount, setWhiteDeckCount] = useState('')
@@ -17,7 +17,7 @@ export default function WhiteCardHand({ hand, setHand }) {
   useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
-    setChosenCard('')
+    setChosenCard(null)
   })
   const handleDrawFullHand = () => socket.emit('DRAW_FULL_HAND')
 
@@ -25,15 +25,13 @@ export default function WhiteCardHand({ hand, setHand }) {
 
   const handleClick = (e) => {
     e.preventDefault()
-    const newHand = hand.filter(card => card !== chosenCard)
-    setHand(newHand)
     setSubmitted(true)
     socket.emit('CHOOSE_WHITE_CARD', chosenCard)
   }
 
   const options = hand.map(card => (
     <div key={card}>
-      <input className={styles.radio} type="radio" name="whiteCard" id={card} value={card} onChange={handleChange} />
+      <input className={styles.radio} type="radio" name="whiteCard" checked={chosenCard === card} id={card} value={card} onChange={handleChange} />
       <label htmlFor={card}>
         <WhiteCard notActive={currentPlayer?.czar || submitted || !currentPlayer} text={card} />
       </label>
