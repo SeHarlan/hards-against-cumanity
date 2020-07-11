@@ -14,18 +14,23 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await fetch('/api/pathnames', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(text),
-    })
-      .then(res => res.json())
-      .then(res => console.log('made room: ', res))
+    try {
+      await fetch('/api/pathnames', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(text),
+      })
+        .then(res => res.json())
+        .then(res => console.log('made room: ', res))
 
-    setName(text)
-    socket.emit("CREATE_ROOM", text)
+      setName(text)
+      socket.emit("CREATE_ROOM", text)
+    } catch (error) {
+      console.log(error)
+    }
+
   }
   return (
     <Layout home>
