@@ -10,13 +10,13 @@ import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
 import DangerZone from '../components/DangerZone';
 import WinningModal from '../components/WinningModal';
+import { useRouter } from 'next/router';
 
 const Players = withList(Player)
 
 const winningScore = 7
 
-export default function GameTable() {
-
+export default function GameTable({ paramsName }) {
   const [chosenCards, setChosenCards] = useState([])
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [whiteHand, setWhiteHand] = useState([])
@@ -63,7 +63,9 @@ export default function GameTable() {
 
   const handleJoinGame = (e) => {
     e.preventDefault()
-    socket.emit('JOIN_GAME', nameText)
+
+    const roomName = paramsName || 'GameTable'
+    socket.emit('JOIN_GAME', nameText, roomName)
   }
 
   const buttonDisabled = (!currentPlayer?.czar || chosenCards.length)
@@ -73,6 +75,9 @@ export default function GameTable() {
   return (
     <Layout>
       <section>
+        <h1 className={styles.czar}>{paramsName}</h1>
+        <em className={utilStyles.cardsRemaining}>{process.env.URL_BASE}{paramsName}</em>
+
 
         {!currentPlayer && (<>
           <form className={utilStyles.buttonContainer} onSubmit={handleJoinGame}>

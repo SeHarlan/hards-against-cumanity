@@ -1,8 +1,11 @@
-export default (req, res) => {
-  console.log('api req', req)
+const roomNames = []
+
+export default function handler(req, res) {
   if (req.method === 'POST') {
-    //upload room name
+    roomNames.push(req.body)
+    console.log('Room Names API: ', roomNames)
+    res.send(JSON.stringify(roomNames))
   } else {
-    // give out room names
+    res.send(JSON.stringify(roomNames))
   }
 }
