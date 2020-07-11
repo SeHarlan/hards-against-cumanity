@@ -1,6 +1,6 @@
 module.exports = {
   target: 'serverless',
   env: {
-    URL_BASE: 'http://localhost:3000/'
+    URL_BASE: 'https://hards-against-cumanity.herokuapp.com/'
   }
 }
