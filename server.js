@@ -30,8 +30,8 @@ const rooms = new Rooms()
 io.on('connection', socket => {
   socket.on('CREATE_ROOM', (room) => {
     socket.join(room)
-    socket.room = room
     rooms.addRoom(room)
+    socket.room = room
     console.log(rooms)
 
     console.log('created socket room: ', socket.room)
@@ -43,7 +43,6 @@ io.on('connection', socket => {
     if (index !== -1) chosenWhiteCards.splice(index, 1)
     io.to(roomName).emit('CHOSEN_WHITE_CARDS', chosenWhiteCards)
   })
-
 
   socket.on('JOIN_GAME', (name, room) => {
     console.log('JOINING ROOM', room)
