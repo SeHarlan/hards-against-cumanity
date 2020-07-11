@@ -23,9 +23,10 @@ export default function WhiteCardHand({ hand }) {
   })
   const handleDrawFullHand = () => socket.emit('DRAW_FULL_HAND')
 
-  const handleOptionClick = ({ target }) => {
+  const handleChange = ({ target }) => setChosenCard(target.value)
+
+  const handleDeselect = ({ target }) => {
     if (target.value === chosenCard) setChosenCard(null);
-    else setChosenCard(target.value)
   }
 
   const handleFinalAnswer = (e) => {
@@ -41,7 +42,7 @@ export default function WhiteCardHand({ hand }) {
 
   const options = hand.map(card => (
     <div key={card}>
-      <input className={styles.radio} type="radio" name="whiteCard" checked={chosenCard === card} id={card} value={card} onClick={handleOptionClick} />
+      <input className={styles.radio} type="radio" name="whiteCard" checked={chosenCard === card} id={card} value={card} onChange={handleChange} onClick={handleDeselect} />
       <label htmlFor={card}>
         <WhiteCard notActive={buttonDisabled} text={card} />
       </label>
