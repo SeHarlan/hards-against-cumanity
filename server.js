@@ -3,6 +3,7 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 
+const Rooms = require('./lib/Rooms')
 const Deck = require('./lib/Deck')
 const Players = require('./lib/Players')
 const { getCards } = require('./lib/nodeServices')
@@ -22,6 +23,8 @@ let disconectedUsernames = []
 let blackCard = 'Tell the Card Czar to draw a black card!'
 let chosenWhiteCards = []
 let roomName = 'GameTable'
+
+const rooms = new Rooms()
 
 io.on('connection', socket => {
   socket.on('CREATE_ROOM', (room) => {
