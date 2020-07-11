@@ -44,7 +44,7 @@ export default function Home() {
 
         {name && <Link href="/[name]" as={`/${name}`}>
           <a>
-            <h2>{process.env.URL_BASE}{name}</h2>
+            <h2>{process.env.NEXT_PUBLIC_URL_BASE}{name}</h2>
           </a>
         </Link>}
 

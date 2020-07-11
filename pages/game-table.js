@@ -76,7 +76,7 @@ export default function GameTable({ paramsName }) {
     <Layout>
       <section>
         <h1 className={styles.czar}>{paramsName}</h1>
-        <em className={utilStyles.cardsRemaining}>{process.env.URL_BASE}{paramsName}</em>
+        <em className={utilStyles.cardsRemaining}>{process.env.NEXT_PUBLIC_URL_BASE}{paramsName}</em>
 
 
         {!currentPlayer && (<>
