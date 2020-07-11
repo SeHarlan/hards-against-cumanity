@@ -4,6 +4,7 @@ const io = require('socket.io')(server)
 const next = require('next')
 
 const Rooms = require('./lib/Rooms')
+
 const Deck = require('./lib/Deck')
 const Players = require('./lib/Players')
 const { getCards } = require('./lib/nodeServices')
@@ -30,7 +31,8 @@ io.on('connection', socket => {
   socket.on('CREATE_ROOM', (room) => {
     socket.join(room)
     socket.room = room
-    roomName = room
+    rooms.addRoom(room)
+    console.log(rooms)
 
     console.log('created socket room: ', socket.room)
   })

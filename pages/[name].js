@@ -3,7 +3,7 @@ import GameTable from './game-table'
 export default GameTable
 
 export async function getStaticPaths() {
-  let paths = null
+  let paths = [{ params: { name: 'init' } }]
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL_BASE}api/pathnames`)
     const pathnames = await res.json()
