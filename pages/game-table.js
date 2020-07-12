@@ -10,7 +10,6 @@ import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
 import DangerZone from '../components/DangerZone';
 import WinningModal from '../components/WinningModal';
-import { useRouter } from 'next/router';
 
 const Players = withList(Player)
 
@@ -64,7 +63,7 @@ export default function GameTable({ paramsName }) {
   const handleJoinGame = (e) => {
     e.preventDefault()
 
-    const roomName = paramsName || 'GameTable'
+    const roomName = paramsName || 'community'
     socket.emit('JOIN_GAME', nameText, roomName)
   }
 
@@ -75,8 +74,8 @@ export default function GameTable({ paramsName }) {
   return (
     <Layout>
       <section>
-        <h1 className={styles.czar}>{paramsName}</h1>
-        <em className={utilStyles.cardsRemaining}>{process.env.NEXT_PUBLIC_URL_BASE}{paramsName}</em>
+        <h1 className={styles.czar}>{paramsName || 'Community Game Table'}</h1>
+        <em className={utilStyles.cardsRemaining}>{process.env.NEXT_PUBLIC_URL_BASE}{paramsName || 'community'}</em>
 
 
         {!currentPlayer && (<>

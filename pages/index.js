@@ -1,8 +1,7 @@
 import Layout from '../components/Layout'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useSocket from '../lib/useSocket'
 
 export default function Home() {
@@ -36,15 +35,22 @@ export default function Home() {
     <Layout home>
       <section className={utilStyles.headingMd}>
 
-        <Link href="/game-table">
+        <Link href="/game-table" as="/community">
           <a>
-            <h2>Game Table</h2>
+            <h2>Community Game Table</h2>
           </a>
         </Link>
 
-        <form onSubmit={handleSubmit}>
-          <input value={text} onChange={({ target }) => setText(target.value)} />
-          <button>Create Room</button>
+        <form className={utilStyles.buttonContainer} onSubmit={handleSubmit}>
+          <div />
+          <input
+            className={utilStyles.input}
+            type="text"
+            value={text}
+            onChange={({ target }) => setText(target.value)}
+            placeholder="Room Name"
+          />
+          <button className={`${utilStyles.button} ${utilStyles.white}`}>Create Room</button>
         </form>
 
         {name && <Link href="/[name]" as={`/${name}`}>
