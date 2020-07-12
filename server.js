@@ -28,6 +28,10 @@ const rooms = new Rooms()
 
 io.on('connection', socket => {
   socket.on('CREATE_ROOM', (room) => {
+    if (rooms[room]) {
+      socket.emit('INVALID_SIGN_UP')
+      return
+    }
     socket.join(room)
     socket.room = room
     rooms.addRoom(room)
