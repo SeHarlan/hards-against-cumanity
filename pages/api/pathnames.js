@@ -1,8 +1,8 @@
-const roomNames = ['community']
+let roomNames = ['community']
 
 export default function handler(req, res) {
   if (req.method === 'POST') {
-    roomNames.push(req.body)
+    if (!roomNames.includes(req.body)) roomNames = [...roomNames, req.body]
     console.log('Room Names API(post): ', roomNames)
     res.send(JSON.stringify(roomNames))
   } else {
