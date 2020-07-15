@@ -92,6 +92,7 @@
   .buttonContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-items: center;
     column-gap: 2rem;
   }
   .line {

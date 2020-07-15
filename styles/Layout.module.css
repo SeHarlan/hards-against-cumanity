@@ -15,6 +15,12 @@
   margin-bottom: 2rem;
 }
 
+.imageHome {
+  width: 35rem;
+  max-width: 80vw;
+  margin-bottom: 8rem;
+}
+
 @media only screen and (min-width: 730px) {
   .container {
     padding: 0 3rem;
