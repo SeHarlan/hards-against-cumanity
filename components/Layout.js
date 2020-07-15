@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
 import utilStyles from '../styles/utils.module.css'
+import Link from 'next/link'
 
 export const siteTitle = 'Hards Against Cumanity'
 
@@ -27,11 +28,15 @@ export default function Layout({ children, home }) {
         <title>Hards Against Cumanity</title>
       </Head>
       <header className={styles.header}>
-        <img
-          src="/images/hac.png"
-          className={styles.headerImage}
-          alt={siteTitle}
-        />
+        <Link href="/">
+          <a>
+            <img
+              src="/images/hac.png"
+              className={`${styles.headerImage} ${home && styles.imageHome}`}
+              alt={siteTitle}
+            />
+          </a>
+        </Link>
       </header>
 
       <main>

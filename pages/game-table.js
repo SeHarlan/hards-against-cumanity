@@ -10,12 +10,13 @@ import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
 import DangerZone from '../components/DangerZone';
 import WinningModal from '../components/WinningModal';
+import CopyButton from '../components/CopyButton';
 
 const Players = withList(Player)
 
 const winningScore = 7
 
-export default function GameTable({ paramsName }) {
+export default function GameTable({ paramsName = 'community' }) {
   const [chosenCards, setChosenCards] = useState([])
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [whiteHand, setWhiteHand] = useState([])
@@ -26,6 +27,7 @@ export default function GameTable({ paramsName }) {
   const [winningCard, setWinningCard] = useState('')
   const [winner, setWinner] = useState(null)
   const [cardCzar, setCardCzar] = useState('Nobody')
+  const [roomURL, setRoomURL] = useState(null)
 
   const socket = useSocket()
 
@@ -55,6 +57,10 @@ export default function GameTable({ paramsName }) {
     })
   }, [players])
 
+  useEffect(() => {
+    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}${paramsName}`)
+  }, [paramsName])
+
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
 
@@ -63,8 +69,7 @@ export default function GameTable({ paramsName }) {
   const handleJoinGame = (e) => {
     e.preventDefault()
 
-    const roomName = paramsName || 'community'
-    socket.emit('JOIN_GAME', nameText, roomName)
+    socket.emit('JOIN_GAME', nameText, paramsName)
   }
 
   const buttonDisabled = (!currentPlayer?.czar || chosenCards.length)
@@ -73,9 +78,12 @@ export default function GameTable({ paramsName }) {
 
   return (
     <Layout>
-      <section>
-        <h1 className={styles.czar}>{paramsName || 'Community Game Table'}</h1>
-        <em className={utilStyles.cardsRemaining}>{process.env.NEXT_PUBLIC_URL_BASE}{paramsName || 'community'}</em>
+      <section >
+        <section className={utilStyles.buttonContainer}>
+          <div />
+          <h1 className={styles.czar}>{paramsName === 'community' ? 'Community Game Table' : paramsName}</h1>
+          <CopyButton textToCopy={roomURL} />
+        </section>
 
 
         {!currentPlayer && (<>
@@ -88,7 +96,7 @@ export default function GameTable({ paramsName }) {
               onChange={({ target }) => setNameText(target.value)}
               placeholder="Your Name"
             />
-            <button className={`${utilStyles.button} ${utilStyles.white}`} > Join Game</button>
+            <button className={`${utilStyles.button} ${utilStyles.black}`} > Join Game</button>
           </form>
           {invalid && <p className={utilStyles.cardsRemaining}>Username already taken</p>}
         </>)

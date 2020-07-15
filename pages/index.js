@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import useSocket from '../lib/useSocket'
 import CopyButton from '../components/CopyButton'
 
@@ -9,6 +9,7 @@ export default function Home() {
   const [text, setText] = useState('')
   const [name, setName] = useState('')
   const [invalidName, setInvalidName] = useState(false)
+  const [roomURL, setRoomURL] = useState(null)
 
   const socket = useSocket()
 
@@ -18,11 +19,12 @@ export default function Home() {
     setInvalidName(true)
   })
 
-  const copyRef = useRef(null)
+  useEffect(() => {
+    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}${name}`)
+  }, [name])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     try {
       await fetch('/api/pathnames', {
         method: 'POST',
@@ -45,7 +47,7 @@ export default function Home() {
 
   return (
     <Layout home>
-      <section className={utilStyles.headingMd}>
+      <section>
 
         <Link href="/game-table" as="/community">
           <a>
@@ -62,17 +64,17 @@ export default function Home() {
             onChange={({ target }) => setText(target.value)}
             placeholder="Room Name"
           />
-          <button className={`${utilStyles.button} ${utilStyles.white} ${!text && utilStyles.buttonDisabled}`} disabled={!text}>Create Room</button>
+          <button className={`${utilStyles.button} ${utilStyles.black} ${!text && utilStyles.buttonDisabled}`} disabled={!text}>Create Room</button>
         </form>
         {invalidName && <em className={utilStyles.cardsRemaining}>Room Name Already Taken</em>}
 
         {name && <Link href="/[name]" as={`/${name}`}>
           <a>
-            <h2 ref={copyRef} >{process.env.NEXT_PUBLIC_URL_BASE}{name}</h2>
+            <h2 >{roomURL}</h2>
           </a>
         </Link>}
 
-        {/* {name && <CopyButton ref={copyRef} />} */}
+        {name && <CopyButton textToCopy={roomURL} />}
 
       </section>
     </Layout>
