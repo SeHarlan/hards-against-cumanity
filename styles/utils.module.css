@@ -88,6 +88,10 @@
   opacity: 0;
 }
 
+.smallText {
+  font-size: 1.2rem;
+}
+
 @media only screen and (min-width: 730px) {
   .buttonContainer {
     display: grid;
