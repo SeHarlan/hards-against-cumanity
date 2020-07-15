@@ -1,51 +1,58 @@
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
 export const siteTitle = 'Hards Against Cumanity'
 
 export default function Layout({ children, home }) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-        <meta
-          name="description"
-          content="Cards Against Humanity Online. Not associated with the acctual company, plz buy their stuff!"
-        />
-        <meta
-          property="og:image"
-          content={`https://og-image.now.sh/${encodeURI(
-            siteTitle
-          )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
-        />
-        <meta name="og:title" content={siteTitle} />
-        <meta name="twitter:card" content="summary_large_image" />
+    <>
+      <div className={styles.container}>
+        <Head>
+          <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="description"
+            content="Cards Against Humanity Online. Not associated with the acctual company, plz buy their stuff!"
+          />
+          <meta
+            property="og:image"
+            content={`https://og-image.now.sh/${encodeURI(
+              siteTitle
+            )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
+          />
+          <meta name="og:title" content={siteTitle} />
+          <meta name="twitter:card" content="summary_large_image" />
 
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet" />
 
-        <title>Hards Against Cumanity</title>
-      </Head>
-      <header className={styles.header}>
-        <Link href="/">
-          <a>
-            <img
-              src="/images/hac.png"
-              className={`${styles.headerImage} ${home && styles.imageHome}`}
-              alt={siteTitle}
-            />
-          </a>
-        </Link>
-      </header>
+          <title>Hards Against Cumanity</title>
+        </Head>
+        <header className={styles.header}>
+          <Link href="/">
+            <a>
+              <img
+                src="/images/hac.png"
+                className={`${styles.headerImage} ${home && styles.imageHome}`}
+                alt={siteTitle}
+              />
+            </a>
+          </Link>
+        </header>
 
-      <main>
-        {children}
-      </main>
+        <main>
+          {children}
+        </main>
 
-      {/* <footer className={styles.backToHome}>
-        footer info goes here
-      </footer> */}
-    </div>
+      </div >
+      <footer className={`${styles.footer} ${home && styles.footerHome}`}>
+        <p>
+          This is a personal project made by Scott Harlan. If you encounter any bugs or have any suggestions for how to improve the site please contact me at <a href="mailto:seharlan@gmail.com" target="_blank" rel="noopener noreferrer"> seharlan@gmail.com</a> or via <a href="https://www.linkedin.com/in/scottharlan-pnw/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+        </p>
+
+        <em>*I do not own any rights to Cards Against Humanity. Please go buy their physical cards sets and support this awesome company!</em>
+        <br />
+        <em>**Cards Against Humanity legal people! If I have infringed on any copyright material please let me know and I will change what needs to be changed ASAP.</em>
+      </footer>
+    </>
   )
 }
