@@ -21,6 +21,19 @@
   margin-bottom: 8rem;
 }
 
+.footer {
+  width: 100vw;
+  padding: 0.2rem 2rem 1rem;
+  background-color: var(--white);
+  text-align: center;
+  font-size: 0.7rem;
+}
+
+.footerHome {
+  position: fixed;
+  bottom: 0;
+}
+
 @media only screen and (min-width: 730px) {
   .container {
     padding: 0 3rem;
