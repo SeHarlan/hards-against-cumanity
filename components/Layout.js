@@ -44,6 +44,7 @@ export default function Layout({ children, home }) {
         </main>
 
       </div >
+      {home && <div className={styles.footBuffer} />}
       <footer className={`${styles.footer} ${home && styles.footerHome}`}>
         <p>
           This is a personal project made by Scott Harlan. If you encounter any bugs or have any suggestions for how to improve the site please contact me at <a href="mailto:seharlan@gmail.com" target="_blank" rel="noopener noreferrer"> seharlan@gmail.com</a> or via <a href="https://www.linkedin.com/in/scottharlan-pnw/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
