@@ -70,7 +70,7 @@ export default function Home() {
 
         {name && <Link href="/[name]" as={`/${name}`}>
           <a>
-            <h2 >{roomURL}</h2>
+            <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
           </a>
         </Link>}
 

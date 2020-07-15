@@ -6,7 +6,8 @@ export default function CopyButton({ textToCopy }) {
   const [check, setCheck] = useState(false)
 
   const handleCopy = () => {
-    copy(textToCopy)
+    const text = textToCopy.replace(/ /g, '%20')
+    copy(text)
     setCheck(true)
     setTimeout(() => setCheck(false), 2000)
   }

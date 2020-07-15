@@ -18,13 +18,15 @@
 .imageHome {
   width: 35rem;
   max-width: 80vw;
-  margin-bottom: 8rem;
+  margin-bottom: 10vh;
 }
 
 .footer {
   width: 100vw;
+  margin-top: 2rem;
   padding: 0.2rem 2rem 1rem;
   background-color: var(--white);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-size: 0.7rem;
 }
@@ -34,9 +36,20 @@
   bottom: 0;
 }
 
+.footBuffer {
+  height: 45vh;
+}
+
+
 @media only screen and (min-width: 730px) {
   .container {
     padding: 0 3rem;
+  }
+  .imageHome {
+    margin-bottom: 15vh;
+  }
+  .footer {
+    font-size: 0.8rem;
   }
 }
 
