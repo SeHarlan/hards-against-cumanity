@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react'
 import useSocket from '../lib/useSocket'
 import CopyButton from '../components/CopyButton'
 
-export default function Home() {
+export default function HomePage() {
   const [text, setText] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState(null)
   const [invalidName, setInvalidName] = useState(false)
   const [roomURL, setRoomURL] = useState(null)
 
