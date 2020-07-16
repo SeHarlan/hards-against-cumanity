@@ -19,6 +19,10 @@ export default function Layout({ children, home }) {
           <meta property="og:title" content={siteTitle} />
           <meta property="og:image" content="https://imgur.com/a/rs60o2j" />
           <meta property="og:image:secure_url" content="https://imgur.com/a/rs60o2j" />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content="552" />
+          <meta property="og:image:height" content="214" />
+          <meta property="og:image:alt" content="Hards Against Humanity" />
           <meta name="twitter:card" content="summary_large_image" />
 
 
@@ -39,7 +43,6 @@ export default function Layout({ children, home }) {
               />
             </a>
           </Link>
-          <h1 className={`${utilStyles.hidden} ${utilStyles.noMargin}`}>{siteTitle}</h1>
         </header>
 
         <main>
