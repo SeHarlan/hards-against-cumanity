@@ -68,7 +68,6 @@ export default function GameTable({ paramsName = 'community' }) {
 
   const handleJoinGame = (e) => {
     e.preventDefault()
-
     socket.emit('JOIN_GAME', nameText, paramsName)
   }
 
