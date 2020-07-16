@@ -146,8 +146,8 @@ io.on('connection', socket => {
     const currentCzar = rooms[socket.room].players.players.find(player => player.czar)
     if (currentCzar.name === username) rooms[socket.room].players.changeCzar()
 
-    const currentUser = rooms[socket.room].players.players.find(player => player.name === username)
-    const cardIndex = rooms[socket.room].chosenWhiteCards.findIndex(card => card.id === currentUser.id)
+    const bootedUser = rooms[socket.room].players.players.find(player => player.name === username)
+    const cardIndex = rooms[socket.room].chosenWhiteCards.findIndex(card => card.id === bootedUser.id)
     if (cardIndex !== -1) rooms[socket.room].chosenWhiteCards.splice(cardIndex, 1)
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
 
