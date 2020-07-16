@@ -7,7 +7,7 @@ import CopyButton from '../components/CopyButton'
 
 export default function HomePage() {
   const [text, setText] = useState('')
-  const [name, setName] = useState(null)
+  const [name, setName] = useState('community')
   const [invalidName, setInvalidName] = useState(false)
   const [roomURL, setRoomURL] = useState(null)
 
@@ -69,7 +69,7 @@ export default function HomePage() {
         {invalidName && <em className={utilStyles.cardsRemaining}>Room Name Already Taken</em>}
 
         {name && (<>
-          <Link href="/[name]" as={`/${name || 'community'}`}>
+          <Link href="/[name]" as={`/${name}`}>
             <a>
               <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
             </a>
