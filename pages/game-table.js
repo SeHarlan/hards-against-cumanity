@@ -58,7 +58,7 @@ export default function GameTable({ paramsName = 'community' }) {
   }, [players])
 
   useEffect(() => {
-    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}tables/${paramsName}`)
+    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}${paramsName}`)
   }, [paramsName])
 
 
