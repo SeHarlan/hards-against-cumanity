@@ -49,11 +49,11 @@ export default function HomePage() {
     <Layout home>
       <section>
 
-        <Link href="/game-table" as="/community">
+        {/* <Link href="/game-table" as="/community">
           <a>
             <h2>Community Game Table</h2>
           </a>
-        </Link>
+        </Link> */}
 
         <form className={utilStyles.buttonContainer} onSubmit={handleSubmit}>
           <div />
@@ -68,7 +68,7 @@ export default function HomePage() {
         </form>
         {invalidName && <em className={utilStyles.cardsRemaining}>Room Name Already Taken</em>}
 
-        {name && (<>
+        {/* {name && (<>
           <Link href="/[name]" as={`/${name}`}>
             <a>
               <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
@@ -76,7 +76,7 @@ export default function HomePage() {
           </Link>
           <CopyButton textToCopy={roomURL} />
         </>
-        )}
+        )} */}
 
       </section>
     </Layout>
