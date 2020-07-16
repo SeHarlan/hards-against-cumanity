@@ -27,15 +27,15 @@ export default function Layout({ children, home }) {
           <title>Hards Against Cumanity</title>
         </Head>
         <header className={styles.header}>
-          {/* <Link href="/">
-            <a> */}
-          <img
-            src="/images/hac.png"
-            className={`${styles.headerImage} ${home && styles.imageHome}`}
-            alt={siteTitle}
-          />
-          {/* </a>
-          </Link> */}
+          <Link href="/">
+            <a>
+              <img
+                src="/images/hac.png"
+                className={`${styles.headerImage} ${home && styles.imageHome}`}
+                alt={siteTitle}
+              />
+            </a>
+          </Link>
         </header>
 
         <main>

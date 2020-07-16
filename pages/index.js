@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import useSocket from '../lib/useSocket'
 import CopyButton from '../components/CopyButton'
 
