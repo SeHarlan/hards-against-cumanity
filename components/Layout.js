@@ -18,8 +18,8 @@ export default function Layout({ children, home }) {
 
           <meta property="og:type" content="website" />
           <meta property="og:title" content={siteTitle} />
-          <meta property="og:image" content="https://imgur.com/KKRH9Wf" />
-          <meta property="og:image:secure_url" content="https://imgur.com/KKRH9Wf" />
+          <meta property="og:image" content="https://i.ibb.co/jgVyS99/preview.png" />
+          <meta property="og:image:secure_url" content="https://i.ibb.co/jgVyS99/preview.png" />
           <meta property="og:image:type" content="image/png" />
           <meta property="og:image:width" content="552" />
           <meta property="og:image:height" content="214" />
