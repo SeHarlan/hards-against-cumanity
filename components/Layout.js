@@ -16,7 +16,9 @@ export default function Layout({ children, home }) {
             content="Cards Against Humanity Online. Not associated with the actual company, plz buy their stuff!"
           />
 
+          <meta property="og:type" content="website" />
           <meta property="og:title" content={siteTitle} />
+          <meta property="og:image" content="https://imgur.com/KKRH9Wf" />
           <meta property="og:image:secure_url" content="https://imgur.com/KKRH9Wf" />
           <meta property="og:image:type" content="image/png" />
           <meta property="og:image:width" content="552" />
