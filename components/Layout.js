@@ -14,7 +14,7 @@ export default function Layout({ children, home }) {
             name="description"
             content="Cards Against Humanity Online. Not associated with the actual company, plz buy their stuff!"
           />
-          <meta name="og:image" content='../public/images/preview.png' />
+          {/* <meta name="og:image" content='../public/images/preview.png' /> */}
           <meta name="og:title" content={siteTitle} />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
