@@ -53,7 +53,7 @@
 }
 
 
-.button:hover {
+.button:hover, .button:focus {
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
@@ -61,6 +61,7 @@
 .button:active {
   box-shadow: 0 0 0;
 }
+
 
 .buttonDisabled {
   filter: blur(1px);
