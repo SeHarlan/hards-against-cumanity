@@ -62,7 +62,7 @@ export default function Home() {
             type="text"
             value={text}
             onChange={({ target }) => setText(target.value)}
-            placeholder="Room Name"
+            placeholder="New Room Name"
           />
           <button className={`${utilStyles.button} ${utilStyles.black} ${!text && utilStyles.buttonDisabled}`} disabled={!text}>Create Room</button>
         </form>
