@@ -17,7 +17,8 @@ export default function Layout({ children, home }) {
           />
 
           <meta name="og:title" content={siteTitle} />
-          <meta name="og:image:secure" content="https://imgur.com/a/rs60o2j" />
+          <meta name="og:image" content="https://imgur.com/a/rs60o2j" />
+          <meta name="og:image:secure_url" content="https://imgur.com/a/rs60o2j" />
           <meta name="twitter:card" content="summary_large_image" />
 
 
