@@ -12,13 +12,13 @@
 
 .headerImage {
   width: 20rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .imageHome {
   width: 35rem;
   max-width: 80vw;
-  margin-bottom: 10vh;
+  margin-bottom: 8vh;
 }
 
 .footer {
@@ -46,7 +46,7 @@
     padding: 0 3rem;
   }
   .imageHome {
-    margin-bottom: 15vh;
+    margin-bottom: 13vh;
   }
   .footer {
     font-size: 0.8rem;

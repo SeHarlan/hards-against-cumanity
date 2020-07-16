@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
+import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
 export const siteTitle = 'Hards Against Cumanity'
@@ -16,8 +17,9 @@ export default function Layout({ children, home }) {
           />
 
           <meta name="og:title" content={siteTitle} />
-          <meta name="og:image" content="https://ibb.co/pK8P4b6" />
+          <meta name="og:image" content="https://i.ibb.co/KskGVbc/preview.png" />
           <meta name="twitter:card" content="summary_large_image" />
+
 
 
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
@@ -36,6 +38,7 @@ export default function Layout({ children, home }) {
               />
             </a>
           </Link>
+          <h1 className={`${utilStyles.hidden} ${utilStyles.noMargin}`}>{siteTitle}</h1>
         </header>
 
         <main>
