@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
 import Link from 'next/link'
-import preview from '/images/preview.png'
 
 export const siteTitle = 'Hards Against Cumanity'
 
@@ -16,7 +15,7 @@ export default function Layout({ children, home }) {
             content="Cards Against Humanity Online. Not associated with the actual company, plz buy their stuff!"
           />
 
-          <meta property="og:image" content={preview} />
+          <meta property="og:image" content="/images/preview.png" />
 
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
 
