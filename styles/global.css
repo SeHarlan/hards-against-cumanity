@@ -25,6 +25,14 @@ a:active {
   color: inherit;
 }
 
+input {
+  outline: none;
+}
+
+input:focus, button:focus {
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.6);
+}
+
 :root {
   --initCardShadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   --black: rgb(24, 24, 24);
