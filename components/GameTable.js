@@ -1,22 +1,23 @@
-import Layout from '../components/Layout';
-import { BlackCard, WhiteCard } from '../components/Cards';
-import WhiteCardHand from '../components/WhiteCardHand';
+import Layout from './Layout';
+import { BlackCard, WhiteCard } from './Cards';
+import WhiteCardHand from './WhiteCardHand';
 import { useState, useEffect } from 'react';
-import ChosenCards from '../components/ChosenCards';
+import ChosenCards from './ChosenCards';
 import useSocket from '../lib/useSocket';
 import withList from '../lib/withList'
-import Player from '../components/Player';
+import Player from './Player';
 import styles from '../styles/GameTable.module.css'
 import utilStyles from '../styles/utils.module.css'
-import DangerZone from '../components/DangerZone';
-import WinningModal from '../components/WinningModal';
-import CopyButton from '../components/CopyButton';
+import DangerZone from './DangerZone';
+import WinningModal from './WinningModal';
+import CopyButton from './CopyButton';
 
 const Players = withList(Player)
 
 const winningScore = 7
 
 export default function GameTable({ paramsName = 'community' }) {
+
   const [chosenCards, setChosenCards] = useState([])
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [whiteHand, setWhiteHand] = useState([])
@@ -58,7 +59,7 @@ export default function GameTable({ paramsName = 'community' }) {
   }, [players])
 
   useEffect(() => {
-    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}${paramsName}`)
+    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}tables/${paramsName}`)
   }, [paramsName])
 
 

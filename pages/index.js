@@ -20,7 +20,7 @@ export default function HomePage() {
   })
 
   useEffect(() => {
-    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}${name}`)
+    setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}tables/${name}`)
   }, [name])
 
   const handleSubmit = async (e) => {
@@ -49,7 +49,7 @@ export default function HomePage() {
     <Layout home>
       <section>
 
-        <Link href="/game-table" as="/community">
+        <Link href="/tables/[name]" as="/tables/community">
           <a>
             <h2>Community Game Table</h2>
           </a>
@@ -69,7 +69,7 @@ export default function HomePage() {
         {invalidName && <em className={utilStyles.cardsRemaining}>Room Name Already Taken</em>}
 
         {name && (<>
-          <Link href="/[name]" as={`/${name}`}>
+          <Link href="/tables/[name]" as={`/tables/${name}`}>
             <a>
               <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
             </a>
