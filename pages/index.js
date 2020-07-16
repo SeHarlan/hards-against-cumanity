@@ -68,13 +68,15 @@ export default function HomePage() {
         </form>
         {invalidName && <em className={utilStyles.cardsRemaining}>Room Name Already Taken</em>}
 
-        {name && <Link href="/[name]" as={`/${name}`}>
-          <a>
-            <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
-          </a>
-        </Link>}
-
-        {name && <CopyButton textToCopy={roomURL} />}
+        {name && (<>
+          <Link href="/[name]" as={`/${name || 'community'}`}>
+            <a>
+              <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
+            </a>
+          </Link>
+          <CopyButton textToCopy={roomURL} />
+        </>
+        )}
 
       </section>
     </Layout>
