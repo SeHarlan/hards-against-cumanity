@@ -5,24 +5,11 @@ const next = require('next')
 
 const Rooms = require('./lib/Rooms')
 
-// const Deck = require('./lib/Deck')
-// const Players = require('./lib/Players')
-// const { getCards } = require('./lib/nodeServices')
-
 const port = process.env.PORT || 3000
 
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
-
-
-//NOT DYNAMIC
-// const cards = getCards()
-// let deck = new Deck(cards)
-// const players = new Players()
-// let disconectedUsernames = []
-// let blackCard = 'Tell the Card Czar to draw a black card!'
-// let chosenWhiteCards = []
 
 const rooms = new Rooms()
 
@@ -164,7 +151,7 @@ io.on('connection', socket => {
   })
 
   socket.on('RESTART_GAME', () => {
-    rooms[socket.room].blackCard = 'Czar! hurry and draw a card already.'
+    rooms[socket.room].blackCard = 'Czar! Draw a card already. The people wanna play again!'
     io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
 
     rooms[socket.room].chosenWhiteCards = []
