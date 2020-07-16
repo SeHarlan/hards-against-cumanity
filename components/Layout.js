@@ -16,7 +16,7 @@ export default function Layout({ children, home }) {
           />
 
           <meta name="og:title" content={siteTitle} />
-          <meta name="og:image" content="/public/images/preview.png" />
+          <meta name="og:image" content="https://hards-against-cumanity.herokuapp.com/public/images/preview.png" />
           <meta name="twitter:card" content="summary_large_image" />
 
 
