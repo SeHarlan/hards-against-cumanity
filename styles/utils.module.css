@@ -89,8 +89,8 @@
   opacity: 0;
 }
 
-.smallText {
-  font-size: 1.2rem;
+.wordBreak{
+  word-break: break-all;
 }
 
 @media only screen and (min-width: 730px) {

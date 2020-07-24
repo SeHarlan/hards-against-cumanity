@@ -71,7 +71,7 @@ export default function HomePage() {
         {name && (<>
           <Link href="/tables/[name]" as={`/tables/${name}`}>
             <a>
-              <h2 className={roomURL.length > 28 && utilStyles.smallText}>{roomURL}</h2>
+              <h2 className={utilStyles.wordBreak}>{roomURL}</h2>
             </a>
           </Link>
           <CopyButton textToCopy={roomURL} />

@@ -5,6 +5,7 @@
   margin: 1rem 0.5rem 0 0.5rem;
   border-radius: 0.6rem;
   box-shadow: var(--initCardShadow);
+  word-break: break-word; 
 
   display: flex;
   flex-direction: column;
