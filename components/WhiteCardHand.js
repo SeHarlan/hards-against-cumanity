@@ -13,7 +13,6 @@ export default function WhiteCardHand({ hand }) {
   const [openModal, setOpenModal] = useState(false)
 
   const socket = useSocket()
-  const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
@@ -21,6 +20,7 @@ export default function WhiteCardHand({ hand }) {
     setSubmitted(false)
     setChosenCard(null)
   })
+
   const handleDrawFullHand = () => socket.emit('DRAW_FULL_HAND')
 
   const handleChange = ({ target }) => setChosenCard(target.value)
@@ -28,15 +28,15 @@ export default function WhiteCardHand({ hand }) {
   const handleDeselect = ({ target }) => {
     if (target.value === chosenCard) setChosenCard(null);
   }
-
   const handleFinalAnswer = (e) => {
     e.preventDefault()
-
     if (!chosenCard) return setOpenModal(true)
 
     setSubmitted(true)
     socket.emit('CHOOSE_WHITE_CARD', chosenCard)
   }
+
+  const currentPlayer = players.find(player => player.id === socket.id)
 
   const buttonDisabled = (currentPlayer?.czar || !currentPlayer || submitted)
 

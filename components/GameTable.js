@@ -32,8 +32,6 @@ export default function GameTable({ paramsName = 'community' }) {
 
   const socket = useSocket()
 
-  const currentPlayer = players.find(player => player.id === socket.id)
-
   useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards(cards))
   useSocket('WINNING_CARD', (card) => setWinningCard(card))
 
@@ -62,7 +60,6 @@ export default function GameTable({ paramsName = 'community' }) {
     setRoomURL(`${process.env.NEXT_PUBLIC_URL_BASE}tables/${paramsName}`)
   }, [paramsName])
 
-
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
 
   const handleNewRound = () => socket.emit('START_NEW_ROUND')
@@ -71,6 +68,8 @@ export default function GameTable({ paramsName = 'community' }) {
     e.preventDefault()
     socket.emit('JOIN_GAME', nameText, paramsName)
   }
+
+  const currentPlayer = players.find(player => player.id === socket.id)
 
   const buttonDisabled = (!currentPlayer?.czar || chosenCards.length)
 
@@ -84,7 +83,6 @@ export default function GameTable({ paramsName = 'community' }) {
           <h1 className={styles.czar}>{paramsName === 'community' ? 'Community Game Table' : paramsName}</h1>
           <CopyButton textToCopy={roomURL} />
         </section>
-
 
         {!currentPlayer && (<>
           <form className={utilStyles.buttonContainer} onSubmit={handleJoinGame}>
@@ -116,14 +114,11 @@ export default function GameTable({ paramsName = 'community' }) {
 
           {winningCard && (<>
             <button className={`${utilStyles.button} ${utilStyles.white} ${!currentPlayer?.czar && utilStyles.noDisplay} ${utilStyles.newRoundButtonLargeScreen}`} onClick={handleNewRound}>Start New Round</button>
-
             <div>
               <WhiteCard notActive={true} text={winningCard} />
               <em className={utilStyles.cardsRemaining} >~ Winning Card ~</em>
             </div>
-
           </>)}
-
         </section>
 
         <button className={`${utilStyles.button} ${utilStyles.white} ${!currentPlayer?.czar && utilStyles.noDisplay} ${utilStyles.newRoundButtonSmallScreen} ${!winningCard && utilStyles.buttonDisabled}`} disabled={!winningCard} onClick={handleNewRound}>Start New Round</button>
@@ -137,7 +132,6 @@ export default function GameTable({ paramsName = 'community' }) {
         {currentPlayer && <DangerZone />}
 
         {winner && <WinningModal winnerName={winner} winner={currentPlayer?.name === winner} />}
-
       </section>
     </Layout>
   )

@@ -12,7 +12,6 @@ export default function ChosenCards({ chosenCards }) {
   const [submitted, setSubmitted] = useState(false)
 
   const socket = useSocket()
-  const currentPlayer = players.find(player => player.id === socket.id)
 
   useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => {
@@ -20,15 +19,18 @@ export default function ChosenCards({ chosenCards }) {
     setChosenCard(null)
   })
 
-  const handleChange = ({ target }) => setChosenCard(target.value)
-
   const handleClick = (e) => {
     e.preventDefault()
     setSubmitted(true)
     socket.emit('CHOOSE_WINNING_CARD', chosenCard)
   }
+  const handleChange = ({ target }) => setChosenCard(target.value)
+
+  const currentPlayer = players.find(player => player.id === socket.id)
 
   const hideCards = (chosenCards.length !== players.length - 1)
+
+  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
 
   let options = chosenCards
     .filter(card => card.card !== skipMessage)
@@ -59,8 +61,6 @@ export default function ChosenCards({ chosenCards }) {
   )
 
   if (chosenCards.length && !options.length && !hideCards) options = allSkipped
-
-  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
 
   return (
     <>

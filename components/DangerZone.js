@@ -10,7 +10,6 @@ export default function DangerZone() {
 
   const handleBlackShuffle = () => { socket.emit('SHUFFLE_BLACK_DECK') }
   const handleWhiteShuffle = () => { socket.emit('SHUFFLE_WHITE_DECK') }
-
   const handleBootOut = (e) => {
     e.preventDefault()
     socket.emit('BOOT_OUT', nameText)
