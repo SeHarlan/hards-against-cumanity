@@ -6,14 +6,12 @@ import utilStyles from '../styles/utils.module.css'
 import { skipMessage } from '../components/SkipTurnModal'
 
 
-export default function ChosenCards({ chosenCards }) {
+export default function ChosenCards({ chosenCards, czarBool, players }) {
   const [chosenCard, setChosenCard] = useState(null)
-  const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
 
   const socket = useSocket()
 
-  useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
     setChosenCard(null)
@@ -26,11 +24,9 @@ export default function ChosenCards({ chosenCards }) {
   }
   const handleChange = ({ target }) => setChosenCard(target.value)
 
-  const currentPlayer = players.find(player => player.id === socket.id)
-
   const hideCards = (chosenCards.length !== players.length - 1)
 
-  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
+  const buttonDisabled = (!chosenCard || !czarBool || !chosenCards.length || submitted || hideCards)
 
   let options = chosenCards
     .filter(card => card.card !== skipMessage)
@@ -38,7 +34,7 @@ export default function ChosenCards({ chosenCards }) {
       <div key={card.id}>
         <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
         <label htmlFor={card.id}>
-          <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
+          <WhiteCard notActive={!czarBool || submitted} text={card.card} blank={hideCards} />
         </label>
       </div>
     ))

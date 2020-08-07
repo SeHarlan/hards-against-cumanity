@@ -118,8 +118,10 @@ function chooseWinningCard(socket) {
   socket.on('CHOOSE_WINNING_CARD', (card) => {
     parsedCard = JSON.parse(card)
     rooms[socket.room].players.increaseScore(parsedCard.id)
+    const name = rooms[socket.room].players.getName(parsedCard.id)
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
-    io.to(socket.room).emit('WINNING_CARD', parsedCard.card)
+
+    io.to(socket.room).emit('WINNING_CARD', { card: parsedCard.card, name })
   })
 }
 

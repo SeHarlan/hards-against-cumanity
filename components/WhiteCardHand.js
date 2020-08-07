@@ -5,16 +5,17 @@ import styles from '../styles/WhiteCardHand.module.css'
 import utilStyles from '../styles/utils.module.css'
 import SkipTurnModal from './SkipTurnModal'
 
-export default function WhiteCardHand({ hand }) {
+export default function WhiteCardHand({ currentPlayer }) {
   const [chosenCard, setChosenCard] = useState(null)
-  const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [whiteDeckCount, setWhiteDeckCount] = useState('')
   const [openModal, setOpenModal] = useState(false)
+  const [whiteHand, setWhiteHand] = useState([])
 
   const socket = useSocket()
 
-  useSocket('PLAYERS', (players) => setPlayers(players))
+  useSocket('DRAW_FULL_HAND', (hand) => setWhiteHand(hand))
+  useSocket('DRAW_ONE_CARD', (hand) => setWhiteHand(hand))
   useSocket('WHITE_DECK_COUNT', (count) => setWhiteDeckCount(count))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
@@ -36,11 +37,9 @@ export default function WhiteCardHand({ hand }) {
     socket.emit('CHOOSE_WHITE_CARD', chosenCard)
   }
 
-  const currentPlayer = players.find(player => player.id === socket.id)
-
   const buttonDisabled = (currentPlayer?.czar || !currentPlayer || submitted)
 
-  const options = hand.map(card => (
+  const options = whiteHand.map(card => (
     <div key={card}>
       <input className={styles.radio} type="radio" name="whiteCard" checked={chosenCard === card} id={card} value={card} onChange={handleChange} onClick={handleDeselect} />
       <label htmlFor={card}>
