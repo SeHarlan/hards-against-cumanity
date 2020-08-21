@@ -5,7 +5,7 @@ import styles from '../styles/WhiteCardHand.module.css'
 import utilStyles from '../styles/utils.module.css'
 import SkipTurnModal from './SkipTurnModal'
 
-export default function WhiteCardHand({ currentPlayer }) {
+export default function WhiteCardHand({ currentPlayer, overrideDisableBool }) {
   const [chosenCard, setChosenCard] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [whiteDeckCount, setWhiteDeckCount] = useState('')
@@ -48,7 +48,7 @@ export default function WhiteCardHand({ currentPlayer }) {
     </div>
   ))
 
-
+  //!!! toDO: override button disable when checked
   return (<>
     <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
     <form className={styles.hand}>

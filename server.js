@@ -14,29 +14,29 @@ const nextHandler = nextApp.getRequestHandler()
 const rooms = new Rooms()
 
 io.on('connection', socket => {
-  createRoom(socket)
+  socket.on('disconnect', () => disconnect(socket))
 
-  disconnect(socket)
+  socket.on('CREATE_ROOM', (room) => createRoom(socket, room))
 
-  joinGame(socket)
+  socket.on('JOIN_GAME', (name, room) => joinGame(socket, name, room))
 
-  drawBlackCard(socket)
+  socket.on('DRAW_BLACK_CARD', () => drawBlackCard(socket))
 
-  drawFullHand(socket)
+  socket.on('DRAW_FULL_HAND', () => drawFullHand(socket))
 
-  chooseWhiteCard(socket)
+  socket.on('CHOOSE_WHITE_CARD', (card) => chooseWhiteCard(socket, card))
 
-  chooseWinningCard(socket)
+  socket.on('CHOOSE_WINNING_CARD', (card) => chooseWinningCard(socket, card))
 
-  startNewRound(socket)
+  socket.on('SHUFFLE_WHITE_DECK', () => shuffleWhiteDeck(socket))
 
-  shuffleWhiteDeck(socket)
+  socket.on('SHUFFLE_BLACK_DECK', () => shuffleBlackDeck(socket))
 
-  shuffleBlackDeck(socket)
+  socket.on('BOOT_OUT', (username) => bootOut(socket, username))
 
-  bootOut(socket)
+  socket.on('RESTART_GAME', () => restartGame(socket))
 
-  restartGame(socket)
+  socket.on('START_NEW_ROUND', () => startNewRound(socket))
 })
 
 nextApp.prepare().then(() => {
@@ -55,8 +55,24 @@ nextApp.prepare().then(() => {
   })
 })
 
+function startNewRound(socket) {
+  try {
+    rooms[socket.room].players.changeCzar()
+    rooms[socket.room].chosenWhiteCards = []
+    io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
+    rooms[socket.room].blackCard = rooms[socket.room].deck.drawBlackCard()
+    io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
+    io.to(socket.room).emit('BLACK_DECK_COUNT', rooms[socket.room].deck.blackDeck.length)
+    io.to(socket.room).emit('WINNING_CARD', '')
+    io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
+    io.to(socket.room).emit('NEW_ROUND')
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 function restartGame(socket) {
-  socket.on('RESTART_GAME', () => {
+  try {
     rooms[socket.room].blackCard = 'Czar! Draw a card already. The people wanna play again!'
     io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
     rooms[socket.room].chosenWhiteCards = []
@@ -66,11 +82,13 @@ function restartGame(socket) {
     rooms[socket.room].players.restartGame()
     rooms[socket.room].players.changeCzar()
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-function bootOut(socket) {
-  socket.on('BOOT_OUT', (username) => {
+function bootOut(socket, username) {
+  try {
     const currentCzar = rooms[socket.room].players.players.find(player => player.czar)
     if (currentCzar.name === username)
       rooms[socket.room].players.changeCzar()
@@ -81,52 +99,45 @@ function bootOut(socket) {
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
     rooms[socket.room].players.removePlayer(username)
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function shuffleBlackDeck(socket) {
-  socket.on('SHUFFLE_BLACK_DECK', () => {
+  try {
     rooms[socket.room].deck.shuffleBlackDeck()
     io.to(socket.room).emit('BLACK_DECK_COUNT', rooms[socket.room].deck.blackDeck.length)
     rooms[socket.room].blackCard = 'Czar...can you draw a card sometime today?'
     io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function shuffleWhiteDeck(socket) {
-  socket.on('SHUFFLE_WHITE_DECK', () => {
+  try {
     rooms[socket.room].deck.shuffleWhiteDeck()
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-function startNewRound(socket) {
-  socket.on('START_NEW_ROUND', () => {
-    rooms[socket.room].players.changeCzar()
-    rooms[socket.room].chosenWhiteCards = []
-    io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
-    rooms[socket.room].blackCard = rooms[socket.room].deck.drawBlackCard()
-    io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
-    io.to(socket.room).emit('BLACK_DECK_COUNT', rooms[socket.room].deck.blackDeck.length)
-    io.to(socket.room).emit('WINNING_CARD', '')
-    io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
-    io.to(socket.room).emit('NEW_ROUND')
-  })
-}
-
-function chooseWinningCard(socket) {
-  socket.on('CHOOSE_WINNING_CARD', (card) => {
+function chooseWinningCard(socket, card) {
+  try {
     parsedCard = JSON.parse(card)
     rooms[socket.room].players.increaseScore(parsedCard.id)
     const name = rooms[socket.room].players.getName(parsedCard.id)
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
-
     io.to(socket.room).emit('WINNING_CARD', { card: parsedCard.card, name })
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-function chooseWhiteCard(socket) {
-  socket.on('CHOOSE_WHITE_CARD', (card) => {
+function chooseWhiteCard(socket, card) {
+  try {
     cardWithID = { card, id: socket.id }
     rooms[socket.room].chosenWhiteCards.push(cardWithID)
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
@@ -134,30 +145,37 @@ function chooseWhiteCard(socket) {
     const hand = rooms[socket.room].players.drawOneCard(socket.id, card, newCard)
     socket.emit('DRAW_ONE_CARD', hand)
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function drawFullHand(socket) {
-  socket.on('DRAW_FULL_HAND', () => {
+  try {
     const cards = rooms[socket.room].deck.drawWhiteCards(7)
     rooms[socket.room].players.drawFullHand(socket.id, cards)
     socket.emit('DRAW_FULL_HAND', cards)
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function drawBlackCard(socket) {
-  socket.on('DRAW_BLACK_CARD', () => {
+  try {
     rooms[socket.room].blackCard = rooms[socket.room].deck.drawBlackCard()
     io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
     io.to(socket.room).emit('BLACK_DECK_COUNT', rooms[socket.room].deck.blackDeck.length)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-function joinGame(socket) {
-  socket.on('JOIN_GAME', (name, room) => {
+function joinGame(socket, name, room) {
+  try {
     socket.join(room)
     socket.room = room
+
     console.log('Joined Room: ', socket.room)
     let added = false
     if (rooms[socket.room].disconectedUsernames.includes(name)) {
@@ -193,11 +211,13 @@ function joinGame(socket) {
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
     const currentPlayer = rooms[socket.room].players.players.find(player => player.id === socket.id)
     socket.username = currentPlayer.name
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function disconnect(socket) {
-  socket.on('disconnect', () => {
+  try {
     if (!socket.room)
       return
     rooms[socket.room].disconectedUsernames.push(socket.username)
@@ -207,11 +227,13 @@ function disconnect(socket) {
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
     socket.leave(socket.room)
     socket.room = null
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-function createRoom(socket) {
-  socket.on('CREATE_ROOM', (room) => {
+function createRoom(socket, room) {
+  try {
     if (rooms[room]) {
       socket.emit('INVALID_SIGN_UP')
       return
@@ -220,5 +242,9 @@ function createRoom(socket) {
     socket.room = room
     rooms.addRoom(room)
     console.log('Creacted Socket Room: ', socket.room)
-  })
+  } catch (err) {
+    console.log(err)
+  }
 }
+
+

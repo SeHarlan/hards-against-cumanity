@@ -10,32 +10,39 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [blackDeckCount, setBlackDeckCount] = useState('')
   const [winningCard, setWinningCard] = useState(null)
-  const [counter, setCounter] = useState(10)
+  const [timer, setTimer] = useState(null)
+  const [intervalId, setIntervalId] = useState(null)
 
   const socket = useSocket()
 
-  useSocket('DRAW_BLACK_CARD', (card) => setBlackCard(card))
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
-  useSocket('WINNING_CARD', (card) => setWinningCard(card)) // set dec counter!!!
+  useSocket('DRAW_BLACK_CARD', (card) => {
+    clearInterval(intervalId)
+    setTimer(null)
+    setBlackCard(card)
+  })
+  useSocket('WINNING_CARD', (card) => {
+    setWinningCard(card)
 
-  //!!!check winning card vs chosen cards bool and new round
+    if (card) {
+      setTimer(10)
+      const id = setInterval(() => {
+        setTimer(time => time - 1)
+      }, 1000)
+      setIntervalId(id)
+    }
+  })
 
   const handleDrawBlackCard = () => socket.emit('DRAW_BLACK_CARD')
-  const handleNewRound = () => {
-    socket.emit('START_NEW_ROUND')
-    //stop dec counter!!!
-    setCounter(10)
-  }
+  const handleNewRound = () => socket.emit('START_NEW_ROUND')
 
   const buttonDisabled = (!czarBool || chosenCardsBool)
 
   const cardCzarMessage = czarBool ? "You are the Card Czar!" : `${cardCzarName} is the Card Czar.`
 
   useEffect(() => {
-    if (counter <= 0) {
-      handleNewRound()
-    }
-  }, [counter])
+    if (timer <= 0 && czarBool) handleNewRound()
+  }, [timer])
 
   const ButtonOrName = ({ largeScreen }) => {
     if (czarBool) return (<button
@@ -49,7 +56,7 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
         ${!winningCard && utilStyles.buttonDisabled}`}
       disabled={!winningCard}
       onClick={handleNewRound}
-    >Start New Round</button>
+    >Start New Round Now!</button>
     )
     return (<>
       <em className={`
@@ -63,8 +70,6 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
 
   return (<>
     <h3 className={styles.czar}>{cardCzarMessage}</h3>
-
-    {winningCard && <p>New Round in {counter}</p>}
 
     <section className={styles.cardDisplayContainer}>
       <div>
@@ -80,6 +85,8 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
         </div>
       </>)}
     </section>
+
+    {winningCard && <em className={utilStyles.cardsRemaining}>~ New Round in {timer} ~</em>}
 
     <ButtonOrName />
 

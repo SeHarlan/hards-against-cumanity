@@ -2,7 +2,7 @@ import { useState } from "react"
 import utilStyles from '../styles/utils.module.css'
 import useSocket from "../lib/useSocket"
 
-export default function DangerZone() {
+export default function DangerZone({ overrideDisableBool, setOverrideDisableBool }) {
   const [checked, setChecked] = useState(false)
   const [nameText, setNameText] = useState('')
 
@@ -18,9 +18,11 @@ export default function DangerZone() {
 
   const handleRestart = () => { socket.emit('RESTART_GAME') }
 
+  // const handleSkip = (playerName) =>
+
   return (
     <section>
-      <input id="danger" type="checkbox" onChange={() => setChecked(prev => !prev)} />
+      <input id="danger" value={checked} type="checkbox" onChange={() => setChecked(prev => !prev)} />
       <label htmlFor="danger">Danger Zone</label>
 
       {checked && (<div>
@@ -39,6 +41,8 @@ export default function DangerZone() {
             placeholder="Player's Username" />
           <button className={`${utilStyles.button} ${utilStyles.black}`}>Give 'em the boot!</button>
         </form>
+        <input id="override" value={overrideDisableBool} type="checkbox" onChange={() => setOverrideDisableBool(prev => !prev)} />
+        <label htmlFor="override">Override F.A. Disable</label>
         <button className={`${utilStyles.button} ${utilStyles.white}`} onClick={handleRestart}>Restart Game</button>
       </div>)}
     </section>

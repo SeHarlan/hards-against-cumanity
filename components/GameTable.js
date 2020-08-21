@@ -24,6 +24,7 @@ export default function GameTable({ paramsName = 'community' }) {
   const [winner, setWinner] = useState(null)
   const [cardCzar, setCardCzar] = useState('Nobody')
   const [roomURL, setRoomURL] = useState(null)
+  const [overrideDisableBool, setOverrideDisableBool] = useState(false)
 
   const socket = useSocket()
 
@@ -66,9 +67,9 @@ export default function GameTable({ paramsName = 'community' }) {
 
         <hr className={utilStyles.line} />
 
-        <WhiteCardHand currentPlayer={currentPlayer} />
+        <WhiteCardHand currentPlayer={currentPlayer} overrideDisableBool={overrideDisableBool} />
 
-        {currentPlayer && <DangerZone />}
+        {currentPlayer && <DangerZone overrideDisableBool={overrideDisableBool} setOverrideDisableBool={setOverrideDisableBool} />}
 
         {winner && <WinningModal winnerName={winner} winner={currentPlayer?.name === winner} />}
       </section>
