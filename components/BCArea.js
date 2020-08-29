@@ -10,7 +10,7 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
   const [blackCard, setBlackCard] = useState('Not Connected yet')
   const [blackDeckCount, setBlackDeckCount] = useState('')
   const [winningCard, setWinningCard] = useState(null)
-  const [timer, setTimer] = useState(null)
+  const [timer, setTimer] = useState(10)
   const [intervalId, setIntervalId] = useState(null)
 
   const socket = useSocket()
@@ -18,14 +18,13 @@ export function BCArea({ cardCzarName, czarBool, chosenCardsBool }) {
   useSocket('BLACK_DECK_COUNT', (count) => setBlackDeckCount(count))
   useSocket('DRAW_BLACK_CARD', (card) => {
     clearInterval(intervalId)
-    setTimer(null)
+    setTimer(10)
     setBlackCard(card)
   })
   useSocket('WINNING_CARD', (card) => {
     setWinningCard(card)
 
     if (card) {
-      setTimer(10)
       const id = setInterval(() => {
         setTimer(time => time - 1)
       }, 1000)

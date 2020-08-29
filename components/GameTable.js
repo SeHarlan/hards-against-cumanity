@@ -25,20 +25,27 @@ export default function GameTable({ paramsName = 'community' }) {
   const [cardCzar, setCardCzar] = useState('Nobody')
   const [roomURL, setRoomURL] = useState(null)
   const [overrideDisableBool, setOverrideDisableBool] = useState(false)
+  const [disconnected, setDisconnected] = useState(false)
 
   const socket = useSocket()
 
-  useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards(cards))
-  useSocket('PLAYERS', (players) => setPlayers(players))
+  const shuffle = (array) => {
+    return array.sort(() => Math.random() - 0.5)
+  }
+
+  useSocket('CHOSEN_WHITE_CARDS', (cards) => setChosenCards(shuffle(cards)))
+  useSocket('PLAYERS', (players) => setPlayers(Object.values(players)))
   useSocket('NEW_ROUND', () => {
     setChosenCards([])
     setWinner(null)
   })
 
+
   useEffect(() => {
     players.forEach(player => {
       if (player.score >= winningScore) setWinner(player.name)
       if (player.czar) setCardCzar(player.name)
+      if (player.status === "Disconnected" && player.id === socket.id) setDisconnected(true)
     })
   }, [players])
 
@@ -59,9 +66,11 @@ export default function GameTable({ paramsName = 'community' }) {
 
         {!currentPlayer && <JoinForm paramsName={paramsName} />}
 
+        {disconnected && <h1 style={{ textAlign: "center" }}>You have been disconnected</h1>}
+
         <Players className={`${utilStyles.list} ${styles.players}`} list={players} />
 
-        <ChosenCards chosenCards={chosenCards} czarBool={currentPlayer?.czar} players={players} />
+        <ChosenCards chosenCards={chosenCards} czarBool={currentPlayer?.czar} players={players} overrideDisableBool={overrideDisableBool} />
 
         <BCArea cardCzarName={cardCzar} czarBool={currentPlayer?.czar} chosenCardsBool={chosenCards.length} />
 

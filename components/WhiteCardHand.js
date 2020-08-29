@@ -1,11 +1,12 @@
 import { WhiteCard } from './Cards'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useSocket from '../lib/useSocket'
 import styles from '../styles/WhiteCardHand.module.css'
 import utilStyles from '../styles/utils.module.css'
 import SkipTurnModal from './SkipTurnModal'
 
 export default function WhiteCardHand({ currentPlayer, overrideDisableBool }) {
+
   const [chosenCard, setChosenCard] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [whiteDeckCount, setWhiteDeckCount] = useState('')
@@ -33,11 +34,12 @@ export default function WhiteCardHand({ currentPlayer, overrideDisableBool }) {
     e.preventDefault()
     if (!chosenCard) return setOpenModal(true)
 
-    setSubmitted(true)
     socket.emit('CHOOSE_WHITE_CARD', chosenCard)
+    setSubmitted(true)
+    setChosenCard(null)
   }
 
-  const buttonDisabled = (currentPlayer?.czar || !currentPlayer || submitted)
+  const buttonDisabled = !overrideDisableBool && (currentPlayer?.czar || !currentPlayer || submitted)
 
   const options = whiteHand.map(card => (
     <div key={card}>
@@ -48,7 +50,6 @@ export default function WhiteCardHand({ currentPlayer, overrideDisableBool }) {
     </div>
   ))
 
-  //!!! toDO: override button disable when checked
   return (<>
     <p className={styles.label}>Your Cards ({currentPlayer?.name})</p>
     <form className={styles.hand}>

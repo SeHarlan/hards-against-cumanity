@@ -89,10 +89,11 @@ function restartGame(socket) {
 
 function bootOut(socket, username) {
   try {
-    const currentCzar = rooms[socket.room].players.players.find(player => player.czar)
-    if (currentCzar.name === username)
+    const currentCzar = rooms[socket.room].players.getCurrentCzar()
+    if (currentCzar.name === username) {
       rooms[socket.room].players.changeCzar()
-    const bootedUser = rooms[socket.room].players.players.find(player => player.name === username)
+    }
+    const bootedUser = rooms[socket.room].players.players[username]
     const cardIndex = rooms[socket.room].chosenWhiteCards.findIndex(card => card.id === bootedUser.id)
     if (cardIndex !== -1)
       rooms[socket.room].chosenWhiteCards.splice(cardIndex, 1)
@@ -127,8 +128,9 @@ function shuffleWhiteDeck(socket) {
 function chooseWinningCard(socket, card) {
   try {
     parsedCard = JSON.parse(card)
-    rooms[socket.room].players.increaseScore(parsedCard.id)
     const name = rooms[socket.room].players.getName(parsedCard.id)
+    rooms[socket.room].players.increaseScore(name)
+    rooms[socket.room].players.setAllStatusActive()
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
     io.to(socket.room).emit('WINNING_CARD', { card: parsedCard.card, name })
   } catch (err) {
@@ -141,8 +143,10 @@ function chooseWhiteCard(socket, card) {
     cardWithID = { card, id: socket.id }
     rooms[socket.room].chosenWhiteCards.push(cardWithID)
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
+    rooms[socket.room].players.players[socket.username].status = "Submitted"
+    io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
     const [newCard] = rooms[socket.room].deck.drawWhiteCards(1)
-    const hand = rooms[socket.room].players.drawOneCard(socket.id, card, newCard)
+    const hand = rooms[socket.room].players.drawOneCard(socket.username, card, newCard)
     socket.emit('DRAW_ONE_CARD', hand)
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
   } catch (err) {
@@ -151,9 +155,10 @@ function chooseWhiteCard(socket, card) {
 }
 
 function drawFullHand(socket) {
+  console.log(socket.username)
   try {
     const cards = rooms[socket.room].deck.drawWhiteCards(7)
-    rooms[socket.room].players.drawFullHand(socket.id, cards)
+    rooms[socket.room].players.drawFullHand(socket.username, cards)
     socket.emit('DRAW_FULL_HAND', cards)
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
   } catch (err) {
@@ -171,62 +176,53 @@ function drawBlackCard(socket) {
   }
 }
 
+function invalidSignUp(socket, room) {
+  socket.emit('INVALID_SIGN_UP')
+  socket.leave(room)
+  socket.room = null
+  socket.username = null
+}
+
 function joinGame(socket, name, room) {
   try {
     socket.join(room)
     socket.room = room
+
 
     console.log('Joined Room: ', socket.room)
     let added = false
     if (rooms[socket.room].disconectedUsernames.includes(name)) {
       added = rooms[socket.room].players.reconnectPlayer(socket.id, name)
       if (!added) {
-        socket.emit('INVALID_SIGN_UP')
-        socket.leave(room)
-        socket.room = null
+        invalidSignUp(socket, room)
         return
       }
-      const cards = rooms[socket.room].players.getHand(socket.id)
+      const cards = rooms[socket.room].players.getHand(name)
       socket.emit('DRAW_FULL_HAND', cards)
       socket.emit('NEW_ROUND')
       const updatedUsernames = rooms[socket.room].disconectedUsernames.filter(username => username !== name)
+      rooms[socket.room].players.players[name].status = "Active"
       rooms[socket.room].disconectedUsernames = updatedUsernames
+      socket.username = name
     }
     else {
       added = rooms[socket.room].players.addPlayer(socket.id, name)
       if (!added) {
-        socket.emit('INVALID_SIGN_UP')
-        socket.leave(room)
-        socket.room = null
+        invalidSignUp(socket, room)
         return
       }
+      const username = rooms[socket.room].players.getName(socket.id)
       const cards = rooms[socket.room].deck.drawWhiteCards(7)
-      rooms[socket.room].players.drawFullHand(socket.id, cards)
+      rooms[socket.room].players.drawFullHand(username, cards)
       socket.emit('DRAW_FULL_HAND', cards)
+      socket.username = username
     }
     io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
     io.to(socket.room).emit('DRAW_BLACK_CARD', rooms[socket.room].blackCard)
     io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
     io.to(socket.room).emit('BLACK_DECK_COUNT', rooms[socket.room].deck.blackDeck.length)
     io.to(socket.room).emit('WHITE_DECK_COUNT', rooms[socket.room].deck.whiteDeck.length)
-    const currentPlayer = rooms[socket.room].players.players.find(player => player.id === socket.id)
-    socket.username = currentPlayer.name
-  } catch (err) {
-    console.log(err)
-  }
-}
 
-function disconnect(socket) {
-  try {
-    if (!socket.room)
-      return
-    rooms[socket.room].disconectedUsernames.push(socket.username)
-    const index = rooms[socket.room].chosenWhiteCards.findIndex(card => card.id === socket.id)
-    if (index !== -1)
-      rooms[socket.room].chosenWhiteCards.splice(index, 1)
-    io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
-    socket.leave(socket.room)
-    socket.room = null
   } catch (err) {
     console.log(err)
   }
@@ -242,6 +238,26 @@ function createRoom(socket, room) {
     socket.room = room
     rooms.addRoom(room)
     console.log('Creacted Socket Room: ', socket.room)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function disconnect(socket) {
+  try {
+    if (!socket.room) return
+    rooms[socket.room].disconectedUsernames.push(socket.username)
+    rooms[socket.room].players.players[socket.username].status = "Disconnected"
+    io.to(socket.room).emit('PLAYERS', rooms[socket.room].players.players)
+
+    const cardIndex = rooms[socket.room].chosenWhiteCards.findIndex(card => card.id === socket.id)
+    if (cardIndex !== -1) {
+      rooms[socket.room].chosenWhiteCards.splice(cardIndex, 1)
+    }
+    io.to(socket.room).emit('CHOSEN_WHITE_CARDS', rooms[socket.room].chosenWhiteCards)
+    socket.leave(socket.room)
+    socket.username = null
+    socket.room = null
   } catch (err) {
     console.log(err)
   }

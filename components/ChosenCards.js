@@ -6,7 +6,7 @@ import utilStyles from '../styles/utils.module.css'
 import { skipMessage } from '../components/SkipTurnModal'
 
 
-export default function ChosenCards({ chosenCards, czarBool, players }) {
+export default function ChosenCards({ chosenCards, czarBool, players, overrideDisableBool }) {
   const [chosenCard, setChosenCard] = useState(null)
   const [submitted, setSubmitted] = useState(false)
 
@@ -24,16 +24,16 @@ export default function ChosenCards({ chosenCards, czarBool, players }) {
   }
   const handleChange = ({ target }) => setChosenCard(target.value)
 
-  const hideCards = (chosenCards.length !== players.length - 1)
+  const hideCards = (chosenCards.length < players.length - 1)
 
-  const buttonDisabled = (!chosenCard || !czarBool || !chosenCards.length || submitted || hideCards)
+  const buttonDisabled = !overrideDisableBool && (!chosenCard || !czarBool || !chosenCards.length || submitted || hideCards)
 
   let options = chosenCards
     .filter(card => card.card !== skipMessage)
-    .map(card => (
-      <div key={card.id}>
-        <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
-        <label htmlFor={card.id}>
+    .map((card, i) => (
+      <div key={card.id + i}>
+        <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id + i} value={JSON.stringify(card)} onChange={handleChange} />
+        <label htmlFor={card.id + i}>
           <WhiteCard notActive={!czarBool || submitted} text={card.card} blank={hideCards} />
         </label>
       </div>
