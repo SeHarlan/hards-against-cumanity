@@ -6,39 +6,36 @@ import utilStyles from '../styles/utils.module.css'
 import { skipMessage } from '../components/SkipTurnModal'
 
 
-export default function ChosenCards({ chosenCards }) {
+export default function ChosenCards({ chosenCards, czarBool, players, overrideDisableBool }) {
   const [chosenCard, setChosenCard] = useState(null)
-  const [players, setPlayers] = useState([])
   const [submitted, setSubmitted] = useState(false)
 
   const socket = useSocket()
 
-  useSocket('PLAYERS', (players) => setPlayers(players))
   useSocket('NEW_ROUND', () => {
     setSubmitted(false)
     setChosenCard(null)
   })
 
   const handleClick = (e) => {
+    if (!chosenCards.length || !czarBool) return
     e.preventDefault()
     setSubmitted(true)
     socket.emit('CHOOSE_WINNING_CARD', chosenCard)
   }
   const handleChange = ({ target }) => setChosenCard(target.value)
 
-  const currentPlayer = players.find(player => player.id === socket.id)
+  const hideCards = (chosenCards.length < players.length - 1)
 
-  const hideCards = (chosenCards.length !== players.length - 1)
-
-  const buttonDisabled = (!chosenCard || !currentPlayer?.czar || !chosenCards.length || submitted || hideCards)
+  const buttonDisabled = !overrideDisableBool && (!chosenCard || !czarBool || !chosenCards.length || submitted || hideCards)
 
   let options = chosenCards
     .filter(card => card.card !== skipMessage)
-    .map(card => (
-      <div key={card.id}>
-        <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id} value={JSON.stringify(card)} onChange={handleChange} />
-        <label htmlFor={card.id}>
-          <WhiteCard notActive={!currentPlayer?.czar || submitted} text={card.card} blank={hideCards} />
+    .map((card, i) => (
+      <div key={card.id + i}>
+        <input className={styles.radio} type="radio" name="chosenCard" checked={chosenCard === JSON.stringify(card)} id={card.id + i} value={JSON.stringify(card)} onChange={handleChange} />
+        <label htmlFor={card.id + i}>
+          <WhiteCard notActive={!czarBool || submitted} text={card.card} blank={hideCards} />
         </label>
       </div>
     ))

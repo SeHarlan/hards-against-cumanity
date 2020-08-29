@@ -1,8 +1,10 @@
-export default function Player({ name, score, czar }) {
+export default function Player({ name, score, czar, status }) {
   return (
-    <p>
-      <b>{name}:</b> {score}
-      {czar && <em> - Card Czar</em>}
-    </p>
+    <div>
+
+      <p><b>{name}</b>: {score} points</p>
+      {/* {czar ? <em> - Card Czar</em> : <em> - {status}</em>} */}
+      <em>{czar && "Card Czar"} ({status})</em>
+    </div>
   )
 }
