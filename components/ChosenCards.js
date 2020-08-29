@@ -18,6 +18,7 @@ export default function ChosenCards({ chosenCards, czarBool, players, overrideDi
   })
 
   const handleClick = (e) => {
+    if (!chosenCards.length || !czarBool) return
     e.preventDefault()
     setSubmitted(true)
     socket.emit('CHOOSE_WINNING_CARD', chosenCard)
